@@ -1,0 +1,6 @@
+# Runtime dependencies for co_scientist_langgraph
+# Derived from imports across the codebase
+
+langgraph
+langchain-openai
+langchain-core
