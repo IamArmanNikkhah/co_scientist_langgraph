@@ -191,6 +191,23 @@ def make_supervisor_node(llm: ChatOpenAI, max_iterations: int):
         parameters = decision.get("parameters", {})
         rationale = decision.get("rationale", "")
 
+        # Supervisor-side defaulting of generation mode when LLM omitted it
+        if str(next_task) == "generate":
+            gen_mode = str(parameters.get("generation_mode", "")).strip().lower()
+            if not gen_mode:
+                try:
+                    # Heuristic aligned with prompt guidance
+                    use_debate = (
+                        enhanced.get("research_phase") == "exploratory"
+                        or float(enhanced.get("hypothesis_diversity", 0.0)) < 0.35
+                        or float(enhanced.get("stagnation_risk", 0.0)) >= 0.6
+                    )
+                except Exception:
+                    use_debate = False
+                parameters["generation_mode"] = "debate" if use_debate else "standard"
+                if use_debate and "debate_max_turns" not in parameters:
+                    parameters["debate_max_turns"] = 6
+
         prev_top = int(run_meta.get("top_elo_score", 1200))
         its_since = int(run_meta.get("iterations_since_improvement", 0))
         its_since = 0 if stats["top_elo_score"] > prev_top else its_since + 1

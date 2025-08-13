@@ -44,11 +44,14 @@ def build_supervisor_prompt(
 
 - Enforce absolute precedence: reflect before meta_review if unreviewed > 0; rank before meta_review if newly_reviewed > 0; meta_review only when both are 0 and sufficient new reviews.
 - Then score remaining actions and pick the best.
+- When selecting generate, choose the generation method:
+  - Use generation_mode = "debate" during exploratory phases or when hypothesis_diversity is low or stagnation_risk is high; otherwise use "standard".
+  - debate_max_turns defaults to 6 if not specified.
 
 Output a single JSON with keys: next_task, parameters, rationale, strategic_context.
 
 JSON schemas:
-- If generate: {{"quantity": <int>, "focus_area": "<string>"}}
+- If generate: {{"quantity": <int>, "focus_area": "<string>", "generation_mode": "<standard|debate>", "debate_max_turns": <int>}}
 - If reflect: {{"priority_hypothesis_ids": [<ids>], "review_depth": "<standard|deep>"}}
 - If rank: {{"newly_reviewed_ids": [<ids>]}}
 - If evolve: {{"target_hypothesis_ids": [<ids>], "strategy": "<refine|combine|analogize>"}}
