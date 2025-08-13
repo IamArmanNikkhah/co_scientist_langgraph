@@ -52,7 +52,7 @@ Output a single JSON with keys: next_task, parameters, rationale, strategic_cont
 
 JSON schemas:
 - If generate: {{"quantity": <int>, "focus_area": "<string>", "generation_mode": "<standard|debate>", "debate_max_turns": <int>}}
-- If reflect: {{"priority_hypothesis_ids": [<ids>], "review_depth": "<standard|deep>"}}
+- If reflect: {{"priority_hypothesis_ids": [<ids>], "review_depth": "<standard|deep|deep_verification>"}}
 - If rank: {{"newly_reviewed_ids": [<ids>]}}
 - If evolve: {{"target_hypothesis_ids": [<ids>], "strategy": "<refine|combine|analogize>"}}
 - If meta_review: {{"scope": "<full_history|last_3_iterations>", "focus": "<identify_patterns|suggest_new_directions>"}}

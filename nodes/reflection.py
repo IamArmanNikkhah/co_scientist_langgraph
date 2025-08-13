@@ -93,6 +93,10 @@ def make_reflection_node(llm: ChatOpenAI):
                         "contradicts_known_facts": data.get("classification", "").lower() == "disproved",
                     },
                 }
+                # Capture deep verification block if present
+                dv = data.get("deep_verification")
+                if isinstance(dv, dict):
+                    review_obj["deep_verification"] = dv
                 h.setdefault("reviews", []).append(review_obj)
                 h["is_reviewed"] = True
                 # Elo adjustment
