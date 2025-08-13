@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import uuid
 from typing import Any, Dict, List
+import re
 
 from langchain_openai import ChatOpenAI
 
-from ..prompts.generation import literature_strategy_prompt
+from ..prompts.generation import literature_strategy_prompt, debate_generation_prompt
 from ..state import GraphState, safe_append_error
 
 
@@ -19,6 +20,8 @@ def make_generation_node(llm: ChatOpenAI):
         params = s.get("parameters", {}) or {}
         qty = int(params.get("quantity", 1))
         focus_area = str(params.get("focus_area", "")).strip()
+        generation_mode = str(params.get("generation_mode", "standard")).strip().lower()
+        debate_max_turns = int(params.get("debate_max_turns", 6))
 
         config = s.get("research_plan_config", {})
         preferences = config.get("preferences", "")
@@ -44,19 +47,55 @@ def make_generation_node(llm: ChatOpenAI):
         user_instructions = f"Supervisor Focus: {focus_area}".strip()
 
         added = 0
-        for _ in range(qty):
-            prompt = literature_strategy_prompt(
-                goal=goal,
-                summary=summary,
-                preferences=preferences,
-                constraints=constraints,
-                instructions=user_instructions,
-                source_hypotheses_context=source_context,
-            )
-            try:
+
+        async def run_debate_once() -> str:
+            transcript: List[str] = []
+            last_turn_text = ""
+            for turn in range(max(1, debate_max_turns)):
+                speaker = "A" if turn % 2 == 0 else "B"
+                prompt = debate_generation_prompt(
+                    goal=goal,
+                    summary=summary,
+                    preferences=preferences,
+                    constraints=constraints,
+                    source_hypotheses_context=source_context,
+                    transcript=transcript,
+                    speaker_label=speaker,
+                    focus_area=focus_area,
+                )
                 resp = await llm.ainvoke(prompt)
                 text = getattr(resp, "content", str(resp)) or ""
-                hypothesis_text = text.strip()
+                last_turn_text = text.strip()
+
+                # Check for termination signal
+                if re.search(r"^\s*HYPOTHESIS\s*:\s*.+", last_turn_text, re.IGNORECASE | re.MULTILINE):
+                    return last_turn_text
+
+                # Append non-finalizing turn to transcript (attribute to speaker)
+                if last_turn_text:
+                    transcript.append(f"Expert {speaker}: {last_turn_text}")
+
+            # Fallback: return the last turn even if not finalized
+            safe_append_error(s, "Debate mode reached max turns without finalization; using last turn output.")
+            return last_turn_text
+
+        for _ in range(qty):
+            try:
+                if generation_mode == "debate":
+                    hypothesis_text = await run_debate_once()
+                else:
+                    prompt = literature_strategy_prompt(
+                        goal=goal,
+                        summary=summary,
+                        preferences=preferences,
+                        constraints=constraints,
+                        instructions=user_instructions,
+                        source_hypotheses_context=source_context,
+                    )
+                    resp = await llm.ainvoke(prompt)
+                    text = getattr(resp, "content", str(resp)) or ""
+                    hypothesis_text = text.strip()
+
                 if not hypothesis_text:
                     raise ValueError("Empty generation output.")
 
