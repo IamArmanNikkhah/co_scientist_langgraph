@@ -12,6 +12,7 @@ from .nodes.observation_aggregator import make_observation_aggregator_node
 from .nodes.ranking import make_ranking_node
 from .nodes.reflection import make_reflection_node
 from .nodes.supervisor import make_supervisor_node
+from .nodes.dispatcher import make_dispatcher_node
 from .state import GraphState
 
 
@@ -34,6 +35,7 @@ def build_app(supervisor_llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI] = Non
     graph.add_node("rank", make_ranking_node(wllm))
     graph.add_node("evolve", make_evolution_node(wllm))
     graph.add_node("meta_review", make_meta_review_node(wllm))
+    graph.add_node("dispatch", make_dispatcher_node(supervisor_llm, wllm))
 
     # Flow
     graph.set_entry_point("bootstrap")
@@ -42,16 +44,31 @@ def build_app(supervisor_llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI] = Non
     def route_next(state: GraphState) -> str:
         next_task = (state.get("next_task") or "").strip()
         mapping = {
-            "generate": "generate",
-            "reflect": "aggregate",
-            "rank": "rank",
-            "evolve": "evolve",
-            "meta_review": "meta_review",
+            # Supervisor first routes to dispatcher for any actionable task
+            "generate": "dispatch",
+            "reflect": "dispatch",
+            "rank": "dispatch",
+            "evolve": "dispatch",
+            "meta_review": "dispatch",
             "terminate": END,
         }
         return mapping.get(next_task, END)
 
     graph.add_conditional_edges("supervisor", route_next)
+
+    # Dispatcher then forwards to the actual selected node
+    def dispatch_route(state: GraphState) -> str:
+        task = (state.get("next_task") or "").strip()
+        mapping = {
+            "generate": "generate",
+            "reflect": "aggregate",
+            "rank": "rank",
+            "evolve": "evolve",
+            "meta_review": "meta_review",
+        }
+        return mapping.get(task, "supervisor")
+
+    graph.add_conditional_edges("dispatch", dispatch_route)
     graph.add_edge("generate", "supervisor")
     graph.add_edge("aggregate", "reflect")
     graph.add_edge("reflect", "supervisor")
