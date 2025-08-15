@@ -9,6 +9,12 @@ from langchain_openai import ChatOpenAI
 
 from .app import build_app
 from .state import GraphState
+from .interactive import run_interactive
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
 
 
 def get_llm(model: str = "gpt-5", temperature: float = 0.2) -> ChatOpenAI:
@@ -61,8 +67,17 @@ def load_initial_state(args: argparse.Namespace) -> GraphState:
 
 async def run(args: argparse.Namespace):
     llm = get_llm(model=args.model, temperature=args.temperature)
-    app = build_app(llm, max_iterations=args.max_iterations)
+    worker_llm = None
+    if getattr(args, "worker_model", None):
+        worker_llm = get_llm(model=args.worker_model, temperature=getattr(args, "worker_temperature", args.temperature))
     init_state = load_initial_state(args)
+
+    if getattr(args, "interactive", False):
+        final_state = await run_interactive(llm=llm, worker_llm=worker_llm, init_state=init_state, max_iterations=args.max_iterations)
+        print(json.dumps(final_state, indent=2))
+        return
+
+    app = build_app(llm, max_iterations=args.max_iterations)
     final_state = await app.ainvoke(init_state)
     print(json.dumps(final_state, indent=2))
 
@@ -78,8 +93,11 @@ def main():
         help="Path to text file providing initial articles_with_reasoning_text (chronology).",
     )
     parser.add_argument("--max-iterations", type=int, default=20, help="Maximum supervisor iterations before termination.")
-    parser.add_argument("--model", type=str, default="gpt-5", help="OpenAI chat model name.")
-    parser.add_argument("--temperature", type=float, default=0.2, help="LLM temperature.")
+    parser.add_argument("--model", type=str, default="gpt-5", help="Supervisor LLM model name.")
+    parser.add_argument("--temperature", type=float, default=0.2, help="Supervisor LLM temperature.")
+    parser.add_argument("--worker-model", type=str, help="Worker LLM model name for non-supervisor nodes (optional).")
+    parser.add_argument("--worker-temperature", type=float, help="Worker LLM temperature (defaults to --temperature).")
+    parser.add_argument("--interactive", action="store_true", help="Start interactive REPL instead of running the full graph.")
     args = parser.parse_args()
     asyncio.run(run(args))
 
