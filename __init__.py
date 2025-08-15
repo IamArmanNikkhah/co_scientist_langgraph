@@ -13,6 +13,13 @@ Package layout:
 
 from .state import GraphState, TaskName  # re-export for convenience
 
+# Load .env at import time for local development (no-op in prod if missing)
+try:
+    from dotenv import load_dotenv  # type: ignore
+    load_dotenv()
+except Exception:
+    pass
+
 __all__ = [
     "GraphState",
     "TaskName",

@@ -11,6 +11,7 @@ from ..tools import (
     search_crossref,
     search_arxiv,
     search_scholar,
+    web_search_perplexity,
     fetch_url,
     extract_text_from_html,
     extract_text_from_pdf,
@@ -73,6 +74,25 @@ def make_literature_node(llm: ChatOpenAI):
                 records.extend(sc.get("items", []))
         except Exception as e:
             safe_append_error(s, f"Literature: scholar search failed: {e}")
+
+        # Optional: Perplexity web search (Sonar-Pro) to gather up-to-date web context
+        try:
+            if "perplexity" in sources:
+                px = web_search_perplexity.invoke({"query": query, "focus": goal, "max_tokens": 800}) or {}
+                if px.get("content"):
+                    records.append({
+                        "source": "perplexity",
+                        "id": "perplexity-web-answer",
+                        "title": f"Perplexity Answer: {query[:60]}",
+                        "authors": [],
+                        "year": None,
+                        "journal": "web",
+                        "doi": None,
+                        "url": None,
+                        "abstract": _limit_text(px.get("content", ""), 4000),
+                    })
+        except Exception as e:
+            safe_append_error(s, f"Literature: perplexity search failed: {e}")
 
         # 2) Dedupe
         try:

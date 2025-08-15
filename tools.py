@@ -125,7 +125,7 @@ def infer_domain_from_goal(research_goal: str) -> str:
 # Literature Search & Fetch
 # --------------------------
 
-_USER_AGENT = "co-scientist/0.1 (+https://example.org; contact: system)"
+_USER_AGENT = os.getenv("HTTP_USER_AGENT", "co-scientist/0.1 (+https://example.org; contact: system)")
 
 
 def _http_get(url: str, params: Optional[Dict[str, str]] = None, timeout: int = 12):
@@ -303,7 +303,7 @@ def search_scholar(query: str, max_results: int = 10) -> Dict:
 
     Note: We do not scrape Scholar directly to respect ToS. If no key is set, returns an informative error.
     """
-    api_key = os.environ.get("SERPAPI_API_KEY")
+    api_key = os.getenv("SERPAPI_API_KEY")
     if not api_key:
         return {"error": "SERPAPI_API_KEY not set; cannot query Scholar.", "items": []}
     try:
@@ -550,4 +550,72 @@ def dedupe_records(records: list) -> Dict:
             seen[key] = r
 
     return {"items": list(seen.values())}
+
+
+# --------------------------
+# Perplexity (Sonar-Pro) Web Search
+# --------------------------
+
+@tool("web_search_perplexity")
+def web_search_perplexity(
+    query: str,
+    focus: Optional[str] = None,
+    temperature: float = 0.0,
+    max_tokens: int = 1200,
+) -> Dict:
+    """Search the web using Perplexity API (Sonar-Pro) and return answer text and citations.
+
+    Environment variable required:
+    - PERPLEXITY_API_KEY: your Perplexity API key
+
+    Returns a dict: {"content": str, "citations": [str], "raw": {...}} on success, or {"error": str}.
+    """
+    if requests is None:
+        return {"error": "requests not installed"}
+    api_key = os.getenv("PERPLEXITY_API_KEY")
+    if not api_key:
+        return {"error": "PERPLEXITY_API_KEY not set"}
+    try:
+        url = "https://api.perplexity.ai/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+            "User-Agent": _USER_AGENT,
+        }
+        sys_prompt = (
+            "You are a research assistant. Use up-to-date web results and cite sources succinctly." +
+            (f" Focus: {focus}" if (focus or "").strip() else "")
+        )
+        payload = {
+            "model": "sonar-pro",
+            "messages": [
+                {"role": "system", "content": sys_prompt},
+                {"role": "user", "content": query},
+            ],
+            "temperature": float(temperature),
+            "max_tokens": int(max(200, min(max_tokens, 4000))),
+            # Perplexity-specific flags
+            "return_citations": True,
+        }
+        resp = requests.post(url, headers=headers, data=json.dumps(payload), timeout=45)
+        resp.raise_for_status()
+        data = resp.json()
+        content = ""
+        citations = []
+        try:
+            choices = data.get("choices", [])
+            if choices:
+                content = (choices[0].get("message", {}) or {}).get("content") or ""
+                cit = choices[0].get("citations") or []
+                if isinstance(cit, list):
+                    citations.extend([str(c) for c in cit if c])
+        except Exception:
+            pass
+        if not citations:
+            top_cit = data.get("citations") or []
+            if isinstance(top_cit, list):
+                citations = [str(c) for c in top_cit if c]
+        return {"content": content, "citations": citations, "raw": data}
+    except Exception as e:
+        return {"error": f"perplexity_search_failed: {e}"}
 
