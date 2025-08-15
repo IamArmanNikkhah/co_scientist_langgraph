@@ -57,6 +57,7 @@ def make_reflection_node(llm: ChatOpenAI):
                     strategic_context=strategic_context,
                     good_example=good_example,
                     bad_example=bad_example,
+                    literature_chronology=s.get("articles_with_reasoning_text", "") or "",
                 )
                 resp = await llm.ainvoke(prompt)
                 text = getattr(resp, "content", str(resp))

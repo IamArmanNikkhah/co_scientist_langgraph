@@ -7,6 +7,7 @@ from typing import Optional
 from .nodes.bootstrap import make_bootstrap_node
 from .nodes.evolution import make_evolution_node
 from .nodes.generation import make_generation_node
+from .nodes.literature import make_literature_node
 from .nodes.meta_review import make_meta_review_node
 from .nodes.observation_aggregator import make_observation_aggregator_node
 from .nodes.ranking import make_ranking_node
@@ -30,6 +31,7 @@ def build_app(supervisor_llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI] = Non
     graph.add_node("bootstrap", make_bootstrap_node(wllm))
     graph.add_node("supervisor", make_supervisor_node(supervisor_llm, max_iterations))
     graph.add_node("generate", make_generation_node(wllm))
+    graph.add_node("literature", make_literature_node(wllm))
     graph.add_node("aggregate", make_observation_aggregator_node(wllm))
     graph.add_node("reflect", make_reflection_node(wllm))
     graph.add_node("rank", make_ranking_node(wllm))
@@ -45,6 +47,7 @@ def build_app(supervisor_llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI] = Non
         next_task = (state.get("next_task") or "").strip()
         mapping = {
             # Supervisor first routes to dispatcher for any actionable task
+            "literature": "dispatch",
             "generate": "dispatch",
             "reflect": "dispatch",
             "rank": "dispatch",
@@ -60,6 +63,7 @@ def build_app(supervisor_llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI] = Non
     def dispatch_route(state: GraphState) -> str:
         task = (state.get("next_task") or "").strip()
         mapping = {
+            "literature": "literature",
             "generate": "generate",
             "reflect": "aggregate",
             "rank": "rank",
@@ -70,6 +74,7 @@ def build_app(supervisor_llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI] = Non
 
     graph.add_conditional_edges("dispatch", dispatch_route)
     graph.add_edge("generate", "supervisor")
+    graph.add_edge("literature", "supervisor")
     graph.add_edge("aggregate", "reflect")
     graph.add_edge("reflect", "supervisor")
     graph.add_edge("rank", "supervisor")

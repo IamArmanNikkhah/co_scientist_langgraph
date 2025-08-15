@@ -23,6 +23,8 @@ def load_initial_state(args: argparse.Namespace) -> GraphState:
         "meta_review": {},
         "meta_review_critique": "",
         "scientific_observations": None,
+        "articles_with_reasoning": [],
+        "articles_with_reasoning_text": None,
         "literature_content": None,
         "decision": {},
         "next_task": None,
@@ -46,6 +48,14 @@ def load_initial_state(args: argparse.Namespace) -> GraphState:
             state["literature_content"] = None
             state["errors"].append(f"Failed to read literature file: {e}")
 
+    # Optional initial chronology provided by user
+    if args.lit_chronology_file:
+        try:
+            with open(args.lit_chronology_file, "r", encoding="utf-8") as f:
+                state["articles_with_reasoning_text"] = f.read().strip() or None
+        except Exception as e:
+            state["errors"].append(f"Failed to read lit chronology file: {e}")
+
     return state
 
 
@@ -62,6 +72,11 @@ def main():
     parser.add_argument("--goal", type=str, help="Research goal (natural language).")
     parser.add_argument("--input-json", type=str, help="Path to JSON file with initial state.")
     parser.add_argument("--literature-file", type=str, help="Path to text file with literature content.")
+    parser.add_argument(
+        "--lit-chronology-file",
+        type=str,
+        help="Path to text file providing initial articles_with_reasoning_text (chronology).",
+    )
     parser.add_argument("--max-iterations", type=int, default=20, help="Maximum supervisor iterations before termination.")
     parser.add_argument("--model", type=str, default="gpt-5", help="OpenAI chat model name.")
     parser.add_argument("--temperature", type=float, default=0.2, help="LLM temperature.")

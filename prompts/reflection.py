@@ -11,6 +11,7 @@ def build_reflection_prompt(
     strategic_context: str,
     good_example: Optional[str],
     bad_example: Optional[str],
+    literature_chronology: Optional[str],
 ) -> str:
     deep = ""
     if review_depth == "deep":
@@ -64,6 +65,9 @@ Your task is to output a single JSON object with:
 
 Article for Analysis:
 {observations or "No specific observations provided."}
+
+Literature review (chronologically ordered, beginning with the most recent analysis):
+{(literature_chronology or "<none>")}
 
 Hypothesis to Evaluate:
 {hypothesis}

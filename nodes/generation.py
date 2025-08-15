@@ -6,7 +6,10 @@ import re
 
 from langchain_openai import ChatOpenAI
 
-from ..prompts.generation import literature_strategy_prompt, debate_generation_prompt
+from ..prompts.generation import (
+    literature_strategy_prompt,
+    debate_generation_prompt,
+)
 from ..state import GraphState, safe_append_error
 
 
@@ -43,7 +46,9 @@ def make_generation_node(llm: ChatOpenAI):
             context_parts.append(ctx)
         source_context = "\n\n---\n\n".join(context_parts)
 
-        summary = s.get("meta_review_critique", "") or ""
+        # Prefer curated literature chronology if available; otherwise meta-review summary
+        chronology = s.get("articles_with_reasoning_text", "") or ""
+        summary = chronology or (s.get("meta_review_critique", "") or "")
         user_instructions = f"Supervisor Focus: {focus_area}".strip()
 
         added = 0
@@ -91,6 +96,7 @@ def make_generation_node(llm: ChatOpenAI):
                         constraints=constraints,
                         instructions=user_instructions,
                         source_hypotheses_context=source_context,
+                        articles_with_reasoning_text=chronology,
                     )
                     resp = await llm.ainvoke(prompt)
                     text = getattr(resp, "content", str(resp)) or ""

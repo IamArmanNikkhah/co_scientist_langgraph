@@ -4,3 +4,7 @@
 langgraph
 langchain-openai
 langchain-core
+requests
+beautifulsoup4
+lxml
+pdfminer.six

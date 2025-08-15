@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Literal, Optional, TypedDict
 
 
-TaskName = Literal["generate", "reflect", "rank", "evolve", "meta_review", "terminate"]
+TaskName = Literal["literature", "generate", "reflect", "rank", "evolve", "meta_review", "terminate"]
 
 
 class GraphState(TypedDict, total=False):
@@ -17,6 +17,8 @@ class GraphState(TypedDict, total=False):
     - meta_review: Structured meta-review content (dict) or raw content string.
     - meta_review_critique: String form of meta-review insights.
     - scientific_observations: Formatted observations text for Reflection.
+    - articles_with_reasoning: List of literature entries with structured reasoning.
+    - articles_with_reasoning_text: Concatenated chronology text used by prompts.
     - literature_content: Optional raw literature text provided by user.
     - decision: Latest Supervisor decision payload.
     - next_task: Next task selected by Supervisor.
@@ -31,6 +33,8 @@ class GraphState(TypedDict, total=False):
     meta_review: Any
     meta_review_critique: Optional[str]
     scientific_observations: Optional[str]
+    articles_with_reasoning: List[Dict[str, Any]]
+    articles_with_reasoning_text: Optional[str]
     literature_content: Optional[str]
     decision: Dict[str, Any]
     next_task: Optional[TaskName]

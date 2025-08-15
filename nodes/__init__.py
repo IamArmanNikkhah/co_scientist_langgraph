@@ -6,6 +6,7 @@ from .reflection import make_reflection_node
 from .ranking import make_ranking_node
 from .evolution import make_evolution_node
 from .meta_review import make_meta_review_node
+from .literature import make_literature_node
 
 __all__ = [
     "make_bootstrap_node",
@@ -16,6 +17,7 @@ __all__ = [
     "make_ranking_node",
     "make_evolution_node",
     "make_meta_review_node",
+    "make_literature_node",
 ]
 
 
