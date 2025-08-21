@@ -175,18 +175,31 @@ def make_literature_node(llm: ChatOpenAI):
             try:
                 prompt = (
                     "You are compiling literature for a research system. Given a research goal and an article's extracted text, "
-                    "produce a single JSON with keys: title, year, citation, key_findings (list), relevance_to_goal, methodology_notes, limitations.\n\n"
+                    "you must return a JSON OBJECT (not an array or other structure) with the exact schema below.\n\n"
+                    "REQUIRED JSON OBJECT SCHEMA:\n"
+                    "{\n"
+                    '  "title": "string - the article title",\n'
+                    '  "year": "string or number - publication year",\n'
+                    '  "citation": "string - URL, DOI, or citation info",\n'
+                    '  "key_findings": ["array", "of", "string", "findings"],\n'
+                    '  "relevance_to_goal": "string - how this relates to the research goal",\n'
+                    '  "methodology_notes": "string - notes about methodology used",\n'
+                    '  "limitations": "string - study limitations or constraints"\n'
+                    "}\n\n"
                     f"Research Goal: {goal}\n\n"
                     f"Article Title: {rec.get('title','')}\n"
                     f"Year: {rec.get('year','')}\n"
                     f"Citation URL/DOI: {rec.get('url') or rec.get('doi') or ''}\n\n"
                     f"Extracted Text (may be partial):\n{_limit_text(rec.get('extracted_text',''), 3500)}\n\n"
-                    "Return ONLY the JSON."
+                    "CRITICAL: Return ONLY a valid JSON object matching the exact schema above. Do not return arrays, strings, or other formats."
                 )
                 resp = await llm.ainvoke(prompt)
                 raw = getattr(resp, "content", str(resp))
                 js = extract_json_from_text.invoke({"text": raw}) or raw
                 data = json.loads(js)
+                # Ensure data is a dictionary, not a list or other type
+                if not isinstance(data, dict):
+                    raise ValueError(f"Expected dictionary but got {type(data).__name__}")
                 data["source_record"] = {k: rec.get(k) for k in ["source", "id", "doi", "url", "authors", "journal", "arxiv_id"]}
                 articles_with_reasoning.append(data)
             except Exception as e:
