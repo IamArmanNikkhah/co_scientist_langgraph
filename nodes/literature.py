@@ -111,7 +111,7 @@ def make_literature_node(llm: ChatOpenAI):
         # Optional: Perplexity web search (Sonar-Pro) to gather up-to-date web context
         try:
             if "perplexity" in sources:
-                px = web_search_perplexity.invoke({"query": query, "focus": goal, "max_tokens": 800}) or {}
+                px = web_search_perplexity.invoke({"query": query, "focus": goal, "max_tokens": 1500}) or {}
                 if px.get("content"):
                     records.append({
                         "source": "perplexity",

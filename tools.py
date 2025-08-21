@@ -583,14 +583,50 @@ def web_search_perplexity(
             "User-Agent": _USER_AGENT,
         }
         sys_prompt = (
-            "You are a research assistant. Use up-to-date web results and cite sources succinctly." +
-            (f" Focus: {focus}" if (focus or "").strip() else "")
+            "You are a research assistant analyzing scientific literature and research. "
+            "Structure your response with clear sections covering: "
+            "1) KEY FINDINGS: List the main discoveries or conclusions "
+            "2) METHODOLOGY: Describe research methods and approaches used "
+            "3) LIMITATIONS: Identify study constraints, sample size issues, or scope limitations "
+            "4) RELEVANCE: Explain how findings relate to the specific research topic "
+            "Use bullet points and clear headings. Include publication years and cite sources with URLs." +
+            (f" Focus your analysis specifically on: {focus}" if (focus or "").strip() else "")
         )
+        # Transform boolean query to natural language for better Perplexity understanding
+        def _process_query_for_perplexity(raw_query: str) -> str:
+            """Convert boolean search syntax to natural language query."""
+            processed = raw_query
+            # Remove quotes and boolean operators, extract key terms
+            processed = processed.replace('"', '')
+            processed = processed.replace('(', '').replace(')', '')
+            # Convert OR to natural language
+            processed = processed.replace(' OR ', ', ')
+            # Convert AND to natural language connectors
+            processed = processed.replace(' AND ', ' related to ')
+            # Clean up extra spaces
+            processed = ' '.join(processed.split())
+            return processed
+        
+        natural_query = _process_query_for_perplexity(query)
+        
+        # Enhanced user message with context and specific instructions
+        user_message = (
+            f"Research and analyze academic literature and recent developments on: {natural_query}\n\n"
+            f"Please provide a comprehensive analysis covering:\n"
+            f"- Recent research findings and key discoveries\n"
+            f"- Methodological approaches being used\n"
+            f"- Current limitations and challenges in the field\n"
+            f"- Practical applications and real-world relevance\n"
+            f"- Citations to recent academic papers, reports, or authoritative sources\n\n"
+            f"Focus on peer-reviewed research, institutional reports, and credible financial/academic sources."
+            + (f"\n\nSpecial focus area: {focus}" if (focus or "").strip() else "")
+        )
+        
         payload = {
             "model": "sonar-pro",
             "messages": [
                 {"role": "system", "content": sys_prompt},
-                {"role": "user", "content": query},
+                {"role": "user", "content": user_message},
             ],
             "temperature": float(temperature),
             "max_tokens": int(max(200, min(max_tokens, 4000))),
