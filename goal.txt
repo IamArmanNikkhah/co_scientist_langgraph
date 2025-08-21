@@ -1,0 +1,7 @@
+To determine the optimal static asset allocation between Tehran Stock Exchange index funds, gold funds, and fixed-income funds for a 58-year-old Iranian investor by developing a robust portfolio optimization model. This model will identify the specific asset weights that maximize the portfolio's minimum expected Sharpe Ratio across three forward-looking, 10-year scenarios derived from Iran's current conditions:
+
+1.  **Status Quo:** Modeled with persistent international sanctions, chronic domestic inflation, and economic drag from infrastructure crises like water and electricity imbalances.
+2.  **Conflict Escalation:** Modeled with the geopolitical shock of a direct military conflict, resulting in hyperinflation and a severe equity market downturn.
+3.  **Diplomatic Normalization:** Modeled with the positive economic shock of successful negotiations, leading to sanctions relief and market stabilization.
+
+The optimization will be quantitatively constrained to reflect a "moderate risk tolerance" by ensuring the resulting portfolio's annualized volatility does not exceed a predefined threshold (e.g., 15%).

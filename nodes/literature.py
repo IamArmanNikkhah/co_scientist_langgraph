@@ -28,6 +28,39 @@ def _limit_text(text: str, max_chars: int = 5000) -> str:
     return t
 
 
+def _apply_perplexity_priority_selection(items: List[Dict[str, Any]], sources: List[str], max_items: int = 6) -> List[Dict[str, Any]]:
+    """Apply Perplexity-specific priority selection to ensure web search results are included when requested.
+    
+    If 'perplexity' is in the requested sources and we have Perplexity results, guarantee at least one
+    Perplexity result is included in the selection, then fill remaining slots with other sources.
+    
+    Args:
+        items: List of deduplicated literature items
+        sources: List of requested source types
+        max_items: Maximum number of items to select for processing
+        
+    Returns:
+        List of selected items with Perplexity prioritized if requested
+    """
+    # Separate Perplexity from other sources
+    perplexity_items = [item for item in items if item.get('source') == 'perplexity']
+    other_items = [item for item in items if item.get('source') != 'perplexity']
+    
+    selected = []
+    
+    # If Perplexity was requested and we have Perplexity results, guarantee inclusion
+    if "perplexity" in sources and perplexity_items:
+        selected.append(perplexity_items[0])  # Take the first (and likely only) Perplexity result
+        remaining_slots = max_items - 1
+    else:
+        remaining_slots = max_items
+    
+    # Fill remaining slots with best quality items from other sources
+    selected.extend(other_items[:remaining_slots])
+    
+    return selected
+
+
 def make_literature_node(llm: ChatOpenAI):
     async def literature_node(state: GraphState) -> GraphState:
         s = state
@@ -102,9 +135,9 @@ def make_literature_node(llm: ChatOpenAI):
             safe_append_error(s, f"Literature: dedupe failed: {e}")
             items = records
 
-        # 3) Fetch and extract a limited set
+        # 3) Fetch and extract a limited set with Perplexity priority
         extracted: List[Dict[str, Any]] = []
-        to_fetch = items[: min(6, len(items))]
+        to_fetch = _apply_perplexity_priority_selection(items, sources, 6)
         for rec in to_fetch:
             url = rec.get("url")
             doi = rec.get("doi")
