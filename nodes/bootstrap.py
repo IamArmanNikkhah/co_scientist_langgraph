@@ -59,6 +59,7 @@ research_goal: "{goal}"
                 "last_reflection_count": 0,
                 "previous_review_count": 0,
                 "decision_history": [],
+                "last_literature_iteration": None,
             },
         }
         return init

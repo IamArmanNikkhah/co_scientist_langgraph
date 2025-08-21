@@ -138,6 +138,7 @@ def make_supervisor_node(llm: ChatOpenAI, max_iterations: int):
             "new_reviews_since_last": new_reviews_count,
             "evolution_candidates": len(evolution_candidates),
             "has_meta_review": bool(meta_review_content),
+            "last_literature_iteration": run_meta.get("last_literature_iteration"),
         }
 
         # Decision history outcome fill
@@ -226,6 +227,7 @@ def make_supervisor_node(llm: ChatOpenAI, max_iterations: int):
             "evolution_candidates": stats["evolution_candidates"],
             "meta_review_available": stats["has_meta_review"],
             "decision_history": history,
+            "last_literature_iteration": iteration if next_task == "literature" else run_meta.get("last_literature_iteration"),
         }
 
         decision_payload = {
