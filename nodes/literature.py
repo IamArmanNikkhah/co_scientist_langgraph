@@ -109,25 +109,15 @@ def make_literature_node(llm: ChatOpenAI):
             safe_append_error(s, f"Literature: scholar search failed: {e}")
 
         # Optional: Perplexity web search (Sonar-Pro) to gather up-to-date web context
+        perplexity_content = None
         try:
             if "perplexity" in sources:
-                px = web_search_perplexity.invoke({"query": query, "focus": goal, "max_tokens": 1500}) or {}
-                if px.get("content"):
-                    records.append({
-                        "source": "perplexity",
-                        "id": "perplexity-web-answer",
-                        "title": f"Perplexity Answer: {query[:60]}",
-                        "authors": [],
-                        "year": None,
-                        "journal": "web",
-                        "doi": None,
-                        "url": None,
-                        "abstract": _limit_text(px.get("content", ""), 4000),
-                    })
+                px = web_search_perplexity.invoke({"query": query, "focus": goal, "max_tokens": 5000}) or {}
+                perplexity_content = px.get("content", "").strip()
         except Exception as e:
             safe_append_error(s, f"Literature: perplexity search failed: {e}")
 
-        # 2) Dedupe
+        # 2) Dedupe academic sources
         try:
             deduped = dedupe_records.invoke({"records": records}) or {"items": []}
             items: List[Dict[str, Any]] = deduped.get("items", [])
@@ -135,7 +125,7 @@ def make_literature_node(llm: ChatOpenAI):
             safe_append_error(s, f"Literature: dedupe failed: {e}")
             items = records
 
-        # 3) Fetch and extract a limited set with Perplexity priority
+        # 3) Fetch and extract academic sources
         extracted: List[Dict[str, Any]] = []
         to_fetch = _apply_perplexity_priority_selection(items, sources, 6)
         for rec in to_fetch:
@@ -169,8 +159,67 @@ def make_literature_node(llm: ChatOpenAI):
             }
             extracted.append(rec_out)
 
-        # 4) LLM reasoning per article
+        # 4) Process Perplexity content separately (web research summary)
         articles_with_reasoning: List[Dict[str, Any]] = []
+        if perplexity_content:
+            try:
+                perplexity_prompt = (
+                    "You are analyzing web search results from Perplexity for a research system. Given a research goal and web search content, "
+                    "you must return a JSON OBJECT (not an array or other structure) with the exact schema below.\n\n"
+                    "REQUIRED JSON OBJECT SCHEMA:\n"
+                    "{\n"
+                    '  "title": "string - descriptive title for this web research summary",\n'
+                    '  "year": "string - current year for web research",\n'
+                    '  "citation": "string - Perplexity web search",\n'
+                    '  "key_findings": ["array", "of", "string", "key insights from web sources"],\n'
+                    '  "relevance_to_goal": "string - how this web research relates to the research goal",\n'
+                    '  "methodology_notes": "string - note that this is web search aggregation",\n'
+                    '  "limitations": "string - limitations of web search vs peer-reviewed sources"\n'
+                    "}\n\n"
+                    f"Research Goal: {goal}\n\n"
+                    f"Search Query: {query}\n\n"
+                    f"Web Research Content:\n{perplexity_content}\n\n"
+                    "CRITICAL: Return ONLY a valid JSON object matching the exact schema above. This is web research aggregation, not an academic paper."
+                )
+                resp = await llm.ainvoke(perplexity_prompt)
+                raw = getattr(resp, "content", str(resp))
+                js = extract_json_from_text.invoke({"text": raw}) or raw
+                data = json.loads(js)
+                if not isinstance(data, dict):
+                    raise ValueError(f"Expected dictionary but got {type(data).__name__}")
+                data["source_record"] = {
+                    "source": "perplexity",
+                    "id": "perplexity-web-research",
+                    "doi": None,
+                    "url": None,
+                    "authors": [],
+                    "journal": "web_search",
+                    "arxiv_id": None
+                }
+                articles_with_reasoning.append(data)
+            except Exception as e:
+                safe_append_error(s, f"Literature: perplexity processing failed: {e}")
+                # Fallback for Perplexity
+                articles_with_reasoning.append({
+                    "title": f"Web Research: {query}",
+                    "year": "2024",
+                    "citation": "Perplexity web search",
+                    "key_findings": ["Web search content available but processing failed"],
+                    "relevance_to_goal": "Web research related to the query",
+                    "methodology_notes": "Web search aggregation via Perplexity",
+                    "limitations": "Processing error - full analysis unavailable",
+                    "source_record": {
+                        "source": "perplexity",
+                        "id": "perplexity-web-research",
+                        "doi": None,
+                        "url": None,
+                        "authors": [],
+                        "journal": "web_search",
+                        "arxiv_id": None
+                    },
+                })
+
+        # 5) LLM reasoning per academic article
         for rec in extracted:
             try:
                 prompt = (
@@ -216,7 +265,7 @@ def make_literature_node(llm: ChatOpenAI):
                     "source_record": {k: rec.get(k) for k in ["source", "id", "doi", "url", "authors", "journal", "arxiv_id"]},
                 })
 
-        # 5) Build chronology text (append to existing if provided)
+        # 6) Build chronology text (append to existing if provided)
         def _year(x):
             try:
                 return int(x.get("year") or 0)
