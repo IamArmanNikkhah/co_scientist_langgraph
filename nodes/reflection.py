@@ -62,9 +62,27 @@ def make_reflection_node(llm: ChatOpenAI):
                 resp = await llm.ainvoke(prompt)
                 text = getattr(resp, "content", str(resp))
                 json_str = extract_json_from_text.invoke({"text": text}) or text
-                data = json.loads(json_str)
+                
+                # Try to parse JSON, with fallback for malformed responses
+                try:
+                    data = json.loads(json_str)
+                except json.JSONDecodeError:
+                    # Create fallback review from raw text
+                    data = {
+                        "full_analysis": text[:2000] if text else "Failed to generate review",
+                        "classification": "neutral",
+                        "scores": {"overall": 5, "novelty": 5, "validity": 5, "testability": 5, "specificity": 5},
+                        "strengths": ["Review generated from fallback due to JSON parsing error"],
+                        "weaknesses": ["Unable to parse structured review"],
+                        "suggestions": ["Re-run review with clearer instructions"]
+                    }
                 # Build review object
                 scores = data.get("scores", {})
+                # Ensure null-safety for full_analysis field
+                full_analysis = data.get("full_analysis") or ""
+                if not isinstance(full_analysis, str):
+                    full_analysis = str(full_analysis) if full_analysis is not None else ""
+                
                 review_obj: Dict[str, Any] = {
                     "id": str(uuid.uuid4()),
                     "hypothesis_id": h.get("id"),
@@ -77,14 +95,14 @@ def make_reflection_node(llm: ChatOpenAI):
                         "specificity": scores.get("specificity", 6),
                     },
                     "qualitative_feedback": {
-                        "strengths": data.get("strengths", []),
-                        "weaknesses": data.get("weaknesses", []),
-                        "suggestions": data.get("suggestions", []),
-                        "summary": data.get("full_analysis", "")[:280],
+                        "strengths": data.get("strengths") or [],
+                        "weaknesses": data.get("weaknesses") or [],
+                        "suggestions": data.get("suggestions") or [],
+                        "summary": full_analysis[:280] if full_analysis else "",
                     },
                     "paper_analysis": {
                         "classification": data.get("classification", "neutral"),
-                        "full_analysis": data.get("full_analysis", ""),
+                        "full_analysis": full_analysis,
                     },
                     "flags": {
                         "explains_observations": data.get("classification", "").lower() in [
@@ -112,6 +130,27 @@ def make_reflection_node(llm: ChatOpenAI):
                 count += 1
             except Exception as e:
                 safe_append_error(s, f"Reflection error for {h.get('id','?')}: {e}")
+                # Mark as reviewed even if review failed to prevent workflow blocking
+                h["is_reviewed"] = True
+                # Create minimal fallback review
+                fallback_review = {
+                    "id": str(uuid.uuid4()),
+                    "hypothesis_id": h.get("id"),
+                    "reviewer_type": "reflection_agent",
+                    "scores": {"overall": 3, "novelty": 3, "validity": 3, "testability": 3, "specificity": 3},
+                    "qualitative_feedback": {
+                        "strengths": [],
+                        "weaknesses": ["Review failed due to technical error"],
+                        "suggestions": ["Retry review process"],
+                        "summary": f"Review failed: {str(e)[:200]}",
+                    },
+                    "paper_analysis": {
+                        "classification": "neutral",
+                        "full_analysis": f"Review could not be completed due to error: {str(e)}",
+                    },
+                    "flags": {"explains_observations": False, "contradicts_known_facts": False},
+                }
+                h.setdefault("reviews", []).append(fallback_review)
                 continue
 
         s.setdefault("run_metadata", {})

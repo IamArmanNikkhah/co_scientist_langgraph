@@ -59,7 +59,7 @@ Your task is to output a single JSON object with:
 - full_analysis
 - classification in ["missing piece","already explained","other explanations more likely","neutral","disproved"]
 - scores: overall, novelty, validity, testability, specificity (1..10)
-    - strengths, weaknesses, suggestions (arrays)
+- strengths, weaknesses, suggestions (arrays)
 
     {deep}
 
