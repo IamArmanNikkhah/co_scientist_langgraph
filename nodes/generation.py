@@ -96,7 +96,6 @@ def make_generation_node(llm: ChatOpenAI):
                         constraints=constraints,
                         instructions=user_instructions,
                         source_hypotheses_context=source_context,
-                        articles_with_reasoning_text=chronology,
                     )
                     resp = await llm.ainvoke(prompt)
                     text = getattr(resp, "content", str(resp)) or ""

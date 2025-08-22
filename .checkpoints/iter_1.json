@@ -1,0 +1,287 @@
+{
+  "research_goal": "To determine the optimal static asset allocation between Tehran Stock Exchange index funds, gold funds, and fixed-income funds for a 58-year-old Iranian investor by developing a robust portfolio optimization model. This model will identify the specific asset weights that maximize the portfolio's minimum expected Sharpe Ratio across three forward-looking, 10-year scenarios derived from Iran's current conditions:\n\n1.  **Status Quo:** Modeled with persistent international sanctions, chronic domestic inflation, and economic drag from infrastructure crises like water and electricity imbalances.\n2.  **Conflict Escalation:** Modeled with the geopolitical shock of a direct military conflict, resulting in hyperinflation and a severe equity market downturn.\n3.  **Diplomatic Normalization:** Modeled with the positive economic shock of successful negotiations, leading to sanctions relief and market stabilization.\n\nThe optimization will be quantitatively constrained to reflect a \"moderate risk tolerance\" by ensuring the resulting portfolio's annualized volatility does not exceed a predefined threshold (e.g., 15%).",
+  "research_plan_config": {
+    "preferences": "Find a single-period (static) asset allocation among Tehran Stock Exchange index funds, gold funds, and fixed-income funds for a 58-year-old Iranian investor using a robust portfolio optimization that maximizes the portfolio's minimum expected (annualized) Sharpe Ratio across three forward-looking 10-year Iran-specific scenarios (Status Quo, Conflict Escalation, Diplomatic Normalization), subject to a 'moderate risk tolerance' volatility cap.",
+    "attributes": [
+      "Investor profile: 58-year-old Iranian individual, buy-and-hold/static allocation over a 10-year forward horizon",
+      "Asset universe: three asset classes \u2014 Tehran Stock Exchange (TSE) index funds (equity), gold funds, fixed-income funds",
+      "Objective type: robust (maximin) optimization \u2014 maximize the minimum expected annualized Sharpe Ratio across scenarios",
+      "Scenarios (forward-looking, 10-year): Status Quo (persistent sanctions, chronic inflation, infrastructure drag), Conflict Escalation (direct military conflict, hyperinflation, severe equity downturn), Diplomatic Normalization (sanctions relief, market stabilization)",
+      "Risk measure: annualized volatility and Sharpe Ratio computed per scenario; use an appropriate Iran-relevant risk-free rate for Sharpe calculations",
+      "Decision variables: static asset weights for the three asset classes"
+    ],
+    "constraints": [
+      "Weights sum to 1 (fully invested)",
+      "No short selling (weights >= 0) unless explicitly allowed",
+      "Portfolio annualized volatility must not exceed a predefined threshold reflecting moderate risk tolerance (example threshold: 15%)",
+      "Only the three specified asset classes may have nonzero weights (TSE index funds, gold funds, fixed-income funds)",
+      "Single-period (no interim rebalancing) static allocation held over the 10-year horizon",
+      "Scenario parameterizations (returns, volatilities, correlations) must reflect the specified macro/geopolitical assumptions for each scenario"
+    ],
+    "evaluation_criteria": [
+      "Primary: maximized minimum expected annualized Sharpe Ratio across the three scenarios (maximin Sharpe)",
+      "Scenario-level metrics: expected annualized return, annualized volatility, and Sharpe Ratio for each scenario",
+      "Constraint compliance: probability or certainty that annualized volatility <= 15% under each scenario (and overall)",
+      "Downside risk measures: scenario-specific and aggregate CVaR (e.g., 95% CVaR) and maximum drawdown over the 10-year horizon",
+      "Robustness/sensitivity: sensitivity of optimal weights and worst-case Sharpe to perturbations in scenario parameters and choice of risk-free rate",
+      "Practicality/suitability: plausibility and implementability of suggested weights given Iranian market liquidity, fund availability, and investor suitability for age 58",
+      "Stability: stability of optimal weights under alternative model specifications (e.g., different volatility estimation windows or stress assumptions)"
+    ]
+  },
+  "hypotheses": [],
+  "meta_review": {},
+  "meta_review_critique": "",
+  "scientific_observations": null,
+  "articles_with_reasoning": [
+    {
+      "title": "Web evidence summary: robust, scenario-based portfolio optimization for Iranian investors (TSE, gold, fixed income)",
+      "year": "2025",
+      "citation": "Perplexity web search",
+      "key_findings": [
+        "Robust portfolio optimization and scenario-based approaches are increasingly applied to the Tehran Stock Exchange (TSE) and other emerging markets to manage high uncertainty in returns, covariances, and macro shocks.",
+        "Distributionally robust and minimax/worst-case Sharpe formulations are appropriate objectives when parameter estimates are unreliable and the goal is resilience across adverse scenarios.",
+        "Scenario generation (status quo with sanctions, conflict escalation with hyperinflation, diplomatic normalization) is commonly used to produce forward-looking return and covariance inputs for multi-scenario optimization.",
+        "Gold consistently appears as a partial hedge against inflation and geopolitical risk in Iran, but its effectiveness varies across scenarios and it functions mainly as a diversifier rather than a foolproof hedge.",
+        "Fixed-income instruments (government bonds, sukuk, fixed-income funds) provide portfolio stability but their real returns are highly sensitive to domestic inflation and currency risk\u2014especially under conflict/hyperinflation scenarios.",
+        "Imposing a volatility cap (e.g., annualized volatility \u226415%) to reflect moderate risk tolerance is feasible and commonly implemented in robust optimization models targeted at older investors.",
+        "Empirical Iranian studies using GAMS/MATLAB and real TSE data demonstrate that robust multi-objective and scenario-based models can improve out-of-sample resilience to shocks relative to nominal mean-variance allocations.",
+        "Practical constraints for Iran\u2014data quality gaps, capital controls, liquidity constraints, and subjective scenario calibration\u2014meaningfully affect model specification and implementability."
+      ],
+      "relevance_to_goal": "The aggregated web evidence directly supports building a robust static allocation for a 58-year-old Iranian investor across TSE index funds, gold funds, and fixed-income funds by (1) justifying a minimax/worst-case Sharpe objective across the three specified 10-year scenarios, (2) validating the inclusion of a 15% annualized volatility cap to encode moderate risk tolerance, (3) motivating scenario-specific return/covariance inputs (status quo, conflict, normalization), and (4) highlighting the roles and limits of gold and fixed income in Iran-specific stress environments.",
+      "methodology_notes": "This summary is an aggregation of web search results and applied-method descriptions (Perplexity). Identified methods from sources include interval/ellipsoidal uncertainty sets for robust optimization, distributionally robust formulations, minimax Sharpe objectives, multi-objective/goal programming, scenario construction from macro/geopolitical factors, stress testing under extreme scenarios, and implementations in GAMS/MATLAB using real TSE data for calibration/validation.",
+      "limitations": "This is a web-search aggregation rather than a systematic literature review or primary data analysis. Limitations include potential selection bias toward accessible or English-language sources, variable quality of web-hosted papers, and reliance on summarized findings rather than full-method verification. Iranian market data cited in web sources can be incomplete, noisy, or lagged; scenario calibration is subjective; model results depend strongly on chosen uncertainty sets and input assumptions; and implementation constraints (capital controls, liquidity limits, currency/reflation dynamics) may limit real-world applicability. For policy or final allocation decisions, supplement this web evidence with peer-reviewed studies, primary TSE and macroeconomic data, and in-sample/out-of-sample backtesting.",
+      "source_record": {
+        "source": "perplexity",
+        "id": "perplexity-web-research",
+        "doi": null,
+        "url": null,
+        "authors": [],
+        "journal": "web_search",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "\u25a0 Alternative to the Mean-Variance Asset Allocation Analysis: A Scenario Methodology for Portfolio Selection",
+      "year": 2009,
+      "citation": "https://doi.org/10.1201/9781420099553-18",
+      "key_findings": [],
+      "relevance_to_goal": "",
+      "methodology_notes": "",
+      "limitations": "",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1201/9781420099553-18",
+        "doi": "10.1201/9781420099553-18",
+        "url": "https://doi.org/10.1201/9781420099553-18",
+        "authors": [],
+        "journal": "Stock Market Volatility",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "The Black and Litterman Framework with Higher Moments: The Case of Hedge Funds",
+      "year": 2009,
+      "citation": "https://doi.org/10.1201/9781420099553-19",
+      "key_findings": [
+        "Extends the Black\u2013Litterman (BL) framework to incorporate higher moments (e.g., skewness and kurtosis) beyond mean and variance when forming expected returns and optimal allocations.",
+        "Demonstrates how investor views can be combined with an equilibrium (prior) to produce posterior expected returns and resulting portfolio weights in a Bayesian manner.",
+        "Applies the extended BL framework to hedge-fund data, showing improved alignment of allocations when asset returns exhibit non-normal features.",
+        "Argues that accounting for higher moments alters optimal allocations compared with pure mean\u2013variance BL solutions, especially for assets with asymmetric or fat-tailed returns."
+      ],
+      "relevance_to_goal": "Provides a methodological foundation for forming posterior expected returns and optimal weights while allowing incorporation of subjective scenario views and non-normal return distributions. The higher-moments BL extension is directly relevant for Iranian assets (TSE index funds, gold, fixed income) which may exhibit skewness and fat tails across the three forward-looking scenarios. It can be adapted to produce robust allocations that reflect scenario-specific views and priors and to integrate constraints such as a maximum annualized volatility.",
+      "methodology_notes": "Builds on the Black\u2013Litterman Bayesian framework: start with an equilibrium prior (implied returns), encode investor views (point or relative views) with confidence, and compute posterior expected returns. The chapter modifies the objective/estimation to account for higher moments (third/fourth) rather than relying solely on mean\u2013variance. Empirical illustrations use hedge-fund return data to estimate priors, views, and posterior allocations; numerical/optimization procedures are used to derive weights under the extended utility or moment-based criterion.",
+      "limitations": "Focuses on hedge funds and methodological exposition rather than a ready-to-use model for Tehran-specific assets; direct parameter values and priors are not provided for Iran. Practical challenges include estimating higher moments robustly from limited data, specifying view confidences, and increased computational/estimation complexity. The approach does not by itself enforce explicit volatility caps (e.g., 15%) without adding additional optimization constraints, and results can be sensitive to prior specification and sample noise.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1201/9781420099553-19",
+        "doi": "10.1201/9781420099553-19",
+        "url": "https://doi.org/10.1201/9781420099553-19",
+        "authors": [],
+        "journal": "Stock Market Volatility",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "Is gold the best hedge and a safe haven under changing stock market volatility?",
+      "year": 2013,
+      "citation": "https://doi.org/10.1016/j.rfe.2013.03.001",
+      "key_findings": [
+        "Gold exhibits hedge properties against stocks in normal market conditions, providing negative or low correlations with equity returns on average.",
+        "Gold acts as a safe haven (protecting against extreme negative equity returns) primarily during periods of high market stress/volatility, though the strength of this safe-haven property varies by market and volatility regime.",
+        "The hedge and safe-haven effectiveness of gold is regime-dependent: it is more effective in certain high-volatility episodes than in intermediate volatility states.",
+        "Gold\u2019s protective role is not universal across all markets or all time periods\u2014its benefits can weaken during some extreme economic episodes and differ by country/market structure."
+      ],
+      "relevance_to_goal": "Provides empirical evidence that gold\u2019s hedging and safe-haven effectiveness is volatility- and regime-dependent. This informs the portfolio optimization goal by supporting inclusion of gold funds as a conditional protection asset in the three forward-looking 10-year Iran scenarios (Status Quo, Conflict Escalation, Diplomatic Normalization) and suggests the optimizer should allow asset weights to respond to volatility regimes when maximizing the minimum expected Sharpe Ratio under a volatility cap.",
+      "methodology_notes": "Empirical analysis using historical return data to evaluate gold\u2019s correlation and conditional relationship with equity markets across volatility regimes. The paper assesses hedge vs. safe-haven properties by splitting market states (normal vs. high volatility) and applying conditional/statistical techniques (e.g., regressions across quantiles/volatility states and volatility modeling) to identify regime-dependent behavior of gold relative to stocks.",
+      "limitations": "Analysis is based on historical data and particular sample periods up to publication (may not capture later or country-specific shocks). Findings are aggregated across markets and may not transfer directly to Iran\u2019s unique environment (sanctions, chronic inflation, severe geopolitical risk). The study evaluates gold relative to equities but does not directly consider portfolio optimization constraints (e.g., volatility caps, investor age, or fixed-income alternatives) or the effects of hyperinflation and capital controls specific to the Iranian context.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1016/j.rfe.2013.03.001",
+        "doi": "10.1016/j.rfe.2013.03.001",
+        "url": "https://doi.org/10.1016/j.rfe.2013.03.001",
+        "authors": [
+          "Matthew Hood",
+          "Farooq Malik"
+        ],
+        "journal": "Review of Financial Economics",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "Robust Portfolio Selection with Endogenous Expected Returns and Asset Allocation Timing Strategies",
+      "year": 2009,
+      "citation": "https://doi.org/10.1201/9781420099553-17",
+      "key_findings": [
+        "Treating expected returns as endogenous (i.e., determined within the market via an inverted dividend discount model) can explain why theoretically sensitive Markowitz weights are empirically stable.",
+        "Endogenous return expectations (common-knowledge changes) have different implications for an investor's optimal portfolio and the market portfolio than exogenous (insider) changes in expectations.",
+        "There exist intermediate or mixed cases where an investor's expectations are only partially reflected in capital-market dividend expectations; these mixed cases alter optimal holdings relative to the pure endogenous or exogenous extremes.",
+        "Mean\u2013variance optimization that explicitly models endogenous expected returns can account for dynamic feedback between investor beliefs and equilibrium returns, impacting both static allocations and timing strategies.",
+        "Distinguishing the source of return changes (market-wide vs private) is important for robust portfolio selection because it changes how optimal weights respond to expectation shifts."
+      ],
+      "relevance_to_goal": "Provides a theoretical framework for incorporating endogenous expected returns into portfolio optimization. For the research goal\u2014finding an optimal static allocation among Tehran Stock Exchange index funds, gold funds, and fixed-income funds under three forward-looking Iranian scenarios\u2014this chapter suggests modeling how investor beliefs and macro shocks (e.g., sanctions, conflict, normalization) could feed back into expected returns. Incorporating endogenous expectations can make the optimization more realistic and may explain stability of recommended weights despite large changes in assumed returns.",
+      "methodology_notes": "The authors extend mean\u2013variance optimization by modeling expected returns endogenously using an inverted dividend discount model. They analyze distinct cases: endogenous (common-knowledge) expectation changes, exogenous (private/insider) changes, and mixed cases. The work is largely theoretical/analytical; the approach links equilibrium dividend expectations to investor beliefs and studies implications for optimal portfolios and timing strategies.",
+      "limitations": "Chapter is primarily theoretical and does not provide an empirical calibration or direct application to Iranian asset classes (TEPIX, gold, fixed-income). It does not directly implement a robust min\u2013max Sharpe-ratio optimization across explicit scenario paths nor enforce a volatility cap (e.g., 15%). The inverted dividend discount formulation relies on dividend/earnings assumptions and equilibrium conditions that may be hard to validate in the Iranian market under sanctions or conflict shocks.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1201/9781420099553-17",
+        "doi": "10.1201/9781420099553-17",
+        "url": "https://doi.org/10.1201/9781420099553-17",
+        "authors": [],
+        "journal": "Stock Market Volatility",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "Can gold- and USD-backed stablecoins hedge against US stock market volatility? Evidence from a quantile coherency approach",
+      "year": 2024,
+      "citation": "https://doi.org/10.1080/13504851.2024.2428856",
+      "key_findings": [
+        "The paper applies a quantile coherency (quantile cross-spectral) approach to examine dependence between US equities and both gold- and USD-backed stablecoins across return quantiles and frequency bands.",
+        "Results indicate that dependence between assets is quantile- and frequency-dependent: relationships vary in calm vs. extreme market states and across short- vs. long-run horizons.",
+        "Gold (and likely gold-backed instruments) exhibits stronger safe-haven/hedging characteristics in extreme negative equity-tail events (higher coherency in downside quantiles) than in normal market conditions.",
+        "USD-backed stablecoins show different behavior: they can display low contemporaneous correlation with equities in some regimes but are less consistently a tail hedge compared with gold.",
+        "Time-frequency decomposition highlights that hedging effectiveness is not uniform through time (it can strengthen during crises and weaken in normal periods)."
+      ],
+      "relevance_to_goal": "The paper's quantile coherency framework and findings about asset behavior in tail states are directly relevant to building a robust portfolio model for a 58-year-old Iranian investor. Specifically, the study supports (1) modeling tail-dependent asset behavior rather than relying only on unconditional correlations, (2) treating gold funds (or gold-backed instruments) as potential crisis hedges when optimizing for worst-case Sharpe Ratio across adverse scenarios, and (3) recognizing that USD-pegged instruments (analogous to USD exposures or liquid short-term fixed-income) may provide liquidity/stability but are not guaranteed tail hedges. However, the empirical context (US equities, stablecoins) differs from the Tehran market, so insights must be adapted for local currency, sanctions, capital controls, and Iranian fixed-income instruments.",
+      "methodology_notes": "Uses quantile coherency / quantile cross-spectral analysis to measure dependence between asset returns across quantiles (tail vs. center) and across frequencies (short- vs. long-run). The approach decomposes relationships by return quantile and frequency band, allowing identification of state-dependent and horizon-dependent hedging properties. Likely implemented on high-frequency or daily return series with rolling/time-varying analysis to capture dynamics.",
+      "limitations": "Findings are specific to US equities and the particular set of gold- and USD-backed stablecoins studied and may not transfer directly to Tehran Stock Exchange, Iranian gold funds, or local fixed-income funds. The study does not produce static optimal asset weights or account for Iran-specific constraints (capital controls, currency risk, sanctions effects, limited instrument availability). It also likely omits investor-specific constraints (age-related liabilities, target volatility cap like 15%), transaction costs, liquidity limits in stressed local markets, and regulatory risks for crypto-based instruments.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1080/13504851.2024.2428856",
+        "doi": "10.1080/13504851.2024.2428856",
+        "url": "https://doi.org/10.1080/13504851.2024.2428856",
+        "authors": [
+          "Shi-Feng Shao"
+        ],
+        "journal": "Applied Economics Letters",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "Portfolio Optimization Under Local-Stochastic Volatility: Coefficient Taylor Series Approximations & Implied Sharpe Ratio",
+      "year": 2015,
+      "citation": "https://doi.org/10.2139/ssrn.2620906",
+      "key_findings": [
+        "Derives asymptotic (coefficient) Taylor-series approximations for the value function and optimal portfolio strategies in local-stochastic volatility models.",
+        "Introduces the concept of an implied Sharpe ratio under local-stochastic volatility and gives explicit/near-explicit formulas for it via the asymptotic expansion.",
+        "Shows that low-order expansions can produce accurate approximations for policy and performance metrics, improving tractability of otherwise high-dimensional HJB PDEs.",
+        "Provides analytic expressions that clarify how local and stochastic volatility components separately affect optimal allocation and risk-return tradeoffs."
+      ],
+      "relevance_to_goal": "The paper supplies analytic tools to approximate optimal portfolios and implied Sharpe ratios when asset returns follow local-stochastic volatility dynamics. These techniques can be adapted to model the Tehran Stock Exchange, gold, and fixed-income return dynamics under each of the three forward-looking scenarios (status quo, conflict escalation, diplomatic normalization) and to compute scenario-specific Sharpe measures needed for a minimax / robust optimization approach.",
+      "methodology_notes": "Uses continuous-time stochastic control and the HJB PDE for expected utility/mean-variance objectives under a local-stochastic volatility model. Applies coefficient-wise Taylor series (asymptotic) expansions in a small parameter to reduce the PDE to tractable, near-explicit formulas for the value function, optimal policy, and an implied Sharpe ratio. The approach yields closed-form correction terms (low-order) that capture impacts of local and stochastic volatility components.",
+      "limitations": "Results rely on small-parameter asymptotics and continuous-time model assumptions; accuracy may degrade for large volatility shocks or rapid regime changes (e.g., sudden geopolitical shocks). The framework omits practical constraints such as transaction costs, discretely traded rebalancing, liquidity limits, and explicit modeling of three distinct asset classes (TSE index funds, gold funds, fixed-income). Calibration to Iranian-market data and scenario-specific stress (hyperinflation, sanctions) may be challenging and can violate asymptotic assumptions.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.2139/ssrn.2620906",
+        "doi": "10.2139/ssrn.2620906",
+        "url": "https://doi.org/10.2139/ssrn.2620906",
+        "authors": [
+          "Matthew Lorig",
+          "Ronnie Sircar"
+        ],
+        "journal": "SSRN Electronic Journal",
+        "arxiv_id": null
+      }
+    }
+  ],
+  "articles_with_reasoning_text": "- [2009] \u25a0 Alternative to the Mean-Variance Asset Allocation Analysis: A Scenario Methodology for Portfolio Selection \u2014 \n- [2009] The Black and Litterman Framework with Higher Moments: The Case of Hedge Funds \u2014 Provides a methodological foundation for forming posterior expected returns and optimal weights while allowing incorporation of subjective scenario views and non-normal return distributions. The higher-moments BL exte...\n- [2009] Robust Portfolio Selection with Endogenous Expected Returns and Asset Allocation Timing Strategies \u2014 Provides a theoretical framework for incorporating endogenous expected returns into portfolio optimization. For the research goal\u2014finding an optimal static allocation among Tehran Stock Exchange index funds, gold fund...\n- [2013] Is gold the best hedge and a safe haven under changing stock market volatility? \u2014 Provides empirical evidence that gold\u2019s hedging and safe-haven effectiveness is volatility- and regime-dependent. This informs the portfolio optimization goal by supporting inclusion of gold funds as a conditional pro...\n- [2015] Portfolio Optimization Under Local-Stochastic Volatility: Coefficient Taylor Series Approximations & Implied Sharpe Ratio \u2014 The paper supplies analytic tools to approximate optimal portfolios and implied Sharpe ratios when asset returns follow local-stochastic volatility dynamics. These techniques can be adapted to model the Tehran Stock E...\n- [2024] Can gold- and USD-backed stablecoins hedge against US stock market volatility? Evidence from a quantile coherency approach \u2014 The paper's quantile coherency framework and findings about asset behavior in tail states are directly relevant to building a robust portfolio model for a 58-year-old Iranian investor. Specifically, the study supports...\n- [2025] Web evidence summary: robust, scenario-based portfolio optimization for Iranian investors (TSE, gold, fixed income) \u2014 The aggregated web evidence directly supports building a robust static allocation for a 58-year-old Iranian investor across TSE index funds, gold funds, and fixed-income funds by (1) justifying a minimax/worst-case Sh...",
+  "literature_content": null,
+  "decision": {
+    "next_task": "literature",
+    "parameters": {
+      "search_query": "(\"robust portfolio optimization\" OR \"worst-case Sharpe\" OR \"minimax Sharpe\" OR \"robust Sharpe\" OR \"scenario-based optimization\" OR \"distributionally robust optimization\" OR \"stress testing\" OR \"portfolio optimization under scenarios\") AND (\"Tehran Stock Exchange\" OR \"Iran stock market\" OR \"Iranian market\" OR Iran) AND (gold OR \"gold as hedge\" OR \"gold inflation hedge\" OR \"gold conflict hedge\") AND (\"fixed income\" OR bonds OR \"fixed-income funds\" OR \"government bonds\" OR sukuk) AND (\"scenario generation\" OR \"scenario analysis\" OR \"forward-looking scenarios\") AND (\"volatility cap\" OR \"target volatility\" OR \"volatility constraint\" OR \"risk constraint\")",
+      "sources": [
+        "scholar",
+        "arxiv",
+        "crossref",
+        "perplexity"
+      ],
+      "max_results": 20
+    },
+    "rationale": "Bootstrap literature retrieval is mandated. The system is at iteration_count = 0 with no hypotheses (total_hypotheses = 0), no prior literature (last_literature_iteration = null), and research_phase = \"exploratory.\" Per the decision rules, when iteration_count < 2 and no recent literature has been retrieved, the next_task MUST be literature. A broad, targeted search is strategically necessary to (1) identify suitable robust optimization formulations for maximizing a portfolio's minimum expected Sharpe Ratio across scenarios, (2) find methods for scenario generation and modeling of severe country-specific shocks (sanctions, hyperinflation, conflict), (3) gather empirical evidence on Tehran Stock Exchange behavior, gold as an inflation/conflict hedge in Iran or comparable markets, and the characteristics and availability of fixed-income instruments in Iran, and (4) discover practical approaches to enforce an annualized volatility cap (e.g., 15%) within robust optimization frameworks. The chosen query explicitly combines keywords for robust/minimax Sharpe objectives, scenario-based and distributionally robust techniques, Iran/Tehran market context, asset-specific literature (gold and fixed-income), and constraint-handling for volatility. Sources (Google Scholar, arXiv, CrossRef, and Perplexity web search) cover academic papers, preprints, bibliographic records, and recent web-available analyses or policy reports. max_results = 20 balances breadth for a bootstrap phase while keeping the result set manageable for initial synthesis.",
+    "iteration": 1,
+    "statistics": {
+      "iteration_count": 0,
+      "total_hypotheses": 0,
+      "unreviewed_hypotheses": 0,
+      "newly_reviewed_hypotheses": 0,
+      "top_elo_score": 1200,
+      "last_task": null,
+      "iterations_since_improvement": 0,
+      "total_reviews": 0,
+      "new_reviews_since_last": 0,
+      "evolution_candidates": 0,
+      "has_meta_review": false,
+      "last_literature_iteration": null
+    },
+    "enhanced_statistics": {
+      "research_phase": "exploratory",
+      "discovery_momentum": 0.0,
+      "hypothesis_diversity": 0.0,
+      "workflow_efficiency": 1.0,
+      "stagnation_risk": 0.25,
+      "breakthrough_probability": 0.125,
+      "bottleneck_indicators": []
+    },
+    "research_goal": "To determine the optimal static asset allocation between Tehran Stock Exchange index funds, gold funds, and fixed-income funds for a 58-year-old Iranian investor by developing a robust portfolio optimization model. This model will identify the specific asset weights that maximize the portfolio's minimum expected Sharpe Ratio across three forward-looking, 10-year scenarios derived from Iran's current conditions:\n\n1.  **Status Quo:** Modeled with persistent international sanctions, chronic domestic inflation, and economic drag from infrastructure crises like water and electricity imbalances.\n2.  **Conflict Escalation:** Modeled with the geopolitical shock of a direct military conflict, resulting in hyperinflation and a severe equity market downturn.\n3.  **Diplomatic Normalization:** Modeled with the positive economic shock of successful negotiations, leading to sanctions relief and market stabilization.\n\nThe optimization will be quantitatively constrained to reflect a \"moderate risk tolerance\" by ensuring the resulting portfolio's annualized volatility does not exceed a predefined threshold (e.g., 15%).",
+    "strategic_context": "This literature retrieval seeds the entire project by supplying methodological templates, empirical parameter estimates, scenario-construction approaches, and domain knowledge about Iranian assets\u2014information essential to generate the first set of hypotheses (candidate static allocations), to design realistic scenario return/covariance inputs, and to select appropriate robust optimization solvers and constraints. The results will enable subsequent tasks: generating candidate allocations, evolving and refining models (e.g., selecting between minimax Sharpe, distributionally robust formulations, or Black-Litterman adaptations), and ultimately producing a constrained portfolio that maximizes the minimum expected Sharpe Ratio across the three 10-year scenarios while respecting the investor's volatility cap and moderate risk tolerance."
+  },
+  "next_task": "literature",
+  "parameters": {
+    "search_query": "(\"robust portfolio optimization\" OR \"worst-case Sharpe\" OR \"minimax Sharpe\" OR \"robust Sharpe\" OR \"scenario-based optimization\" OR \"distributionally robust optimization\" OR \"stress testing\" OR \"portfolio optimization under scenarios\") AND (\"Tehran Stock Exchange\" OR \"Iran stock market\" OR \"Iranian market\" OR Iran) AND (gold OR \"gold as hedge\" OR \"gold inflation hedge\" OR \"gold conflict hedge\") AND (\"fixed income\" OR bonds OR \"fixed-income funds\" OR \"government bonds\" OR sukuk) AND (\"scenario generation\" OR \"scenario analysis\" OR \"forward-looking scenarios\") AND (\"volatility cap\" OR \"target volatility\" OR \"volatility constraint\" OR \"risk constraint\")",
+    "sources": [
+      "scholar",
+      "arxiv",
+      "crossref",
+      "perplexity"
+    ],
+    "max_results": 20
+  },
+  "run_metadata": {
+    "iteration_count": 1,
+    "last_task": "literature",
+    "total_hypotheses": 0,
+    "top_elo_score": 1200,
+    "iterations_since_improvement": 0,
+    "unreviewed_hypotheses": 0,
+    "newly_reviewed_hypotheses": 0,
+    "last_reflection_count": 0,
+    "previous_review_count": 0,
+    "decision_history": [
+      {
+        "iteration": 0,
+        "action": "literature",
+        "pre_top_elo": 1200,
+        "post_top_elo": null
+      }
+    ],
+    "last_literature_iteration": 0,
+    "evolution_candidates": 0,
+    "meta_review_available": false
+  },
+  "errors": [
+    "Literature: reasoning failed for \u25a0 Alternative to the Mean-Variance Asset Allocation Analysis: A Scenario Methodology for Portfolio Selection: Unterminated string starting at: line 14 column 18 (char 2271)"
+  ],
+  "tournament_state": {},
+  "proximity_graph": {}
+}
