@@ -323,6 +323,12 @@ async def run_interactive(llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI], ini
                     proposed_decision = dict(proposed_decision)
                     proposed_decision.pop("state", None)
                     state["decision"] = proposed_decision
+                
+                # Display warning if present
+                warning = proposed_decision.get("warning")
+                if warning:
+                    print(warning)
+                
                 print("Supervisor proposed (use 'approve' to execute or 'override <task> <json>' to change):")
                 print(json.dumps({k: proposed_decision.get(k) for k in ["next_task", "parameters", "rationale"]}, indent=2))
             except Exception as e:

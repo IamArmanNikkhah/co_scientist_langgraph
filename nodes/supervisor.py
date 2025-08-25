@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional
 from langchain_openai import ChatOpenAI
 
 from ..prompts.supervisor import build_supervisor_prompt
-from ..state import GraphState, safe_append_error
+from ..state import GraphState
 from ..tools import extract_json_from_text
 
 
@@ -175,6 +175,7 @@ def make_supervisor_node(llm: ChatOpenAI, max_iterations: int):
         prompt = build_supervisor_prompt(stats, enhanced, meta_review_content, goal, preferences, summary)
 
         decision: Dict[str, Any] = {}
+        warning_msg = None
         for attempt in range(2):
             try:
                 resp = await llm.ainvoke(prompt)
@@ -188,11 +189,10 @@ def make_supervisor_node(llm: ChatOpenAI, max_iterations: int):
                 if not isinstance(parameters, dict) or not parameters:
                     raise ValueError("parameters missing/empty.")
                 
-                # Check for precedence violations and add warning if detected
+                # Check for precedence violations and store warning for display
                 suggested_step = _validate_precedence(str(next_task), stats)
                 if suggested_step:
                     warning_msg = f"Warning: non-standard step detected. The standard step is: {suggested_step}"
-                    safe_append_error(s, warning_msg)
                 
                 break
             except Exception as e:
@@ -253,6 +253,7 @@ def make_supervisor_node(llm: ChatOpenAI, max_iterations: int):
             "enhanced_statistics": enhanced,
             "research_goal": goal,
             "strategic_context": decision.get("strategic_context", {}),
+            "warning": warning_msg,
         }
 
         return {
