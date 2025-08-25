@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional
 from langchain_openai import ChatOpenAI
 
 from ..prompts.supervisor import build_supervisor_prompt
-from ..state import GraphState
+from ..state import GraphState, safe_append_error
 from ..tools import extract_json_from_text
 
 
@@ -75,20 +75,29 @@ def _enhanced_metrics(hypotheses: List[Dict[str, Any]], stats: Dict[str, Any], h
 
 
 def _validate_precedence(next_task: str, stats: Dict[str, Any]) -> Optional[str]:
+    """
+    Check precedence rules and return suggested standard step if violation detected.
+    Returns None if no violation, or the suggested standard step if violation found.
+    """
     unreviewed = stats.get("unreviewed_hypotheses", 0)
     newly_reviewed = stats.get("newly_reviewed_hypotheses", 0)
     new_reviews_since_last = stats.get("new_reviews_since_last", 0)
 
     if next_task == "meta_review" and unreviewed > 0:
-        return "meta_review blocked: unreviewed hypotheses present (require reflect)."
+        return "reflect"
     if next_task == "meta_review" and newly_reviewed > 0:
-        return "meta_review blocked: newly reviewed hypotheses must be ranked (require rank)."
+        return "rank"
     if next_task == "meta_review" and (unreviewed > 0 or newly_reviewed > 0 or new_reviews_since_last < 5):
-        return "meta_review blocked: workflow incomplete or insufficient new reviews."
+        if unreviewed > 0:
+            return "reflect"
+        elif newly_reviewed > 0:
+            return "rank"
+        else:
+            return "meta_review"  # Allow meta_review if just insufficient reviews
     if unreviewed > 0 and next_task not in ["reflect", "terminate"]:
-        return "priority violation: must reflect before other actions."
+        return "reflect"
     if newly_reviewed > 0 and next_task not in ["rank", "terminate"]:
-        return "priority violation: must rank before other actions."
+        return "rank"
     return None
 
 
@@ -178,9 +187,13 @@ def make_supervisor_node(llm: ChatOpenAI, max_iterations: int):
                 parameters = decision.get("parameters", {})
                 if not isinstance(parameters, dict) or not parameters:
                     raise ValueError("parameters missing/empty.")
-                err = _validate_precedence(str(next_task), stats)
-                if err:
-                    raise ValueError(err)
+                
+                # Check for precedence violations and add warning if detected
+                suggested_step = _validate_precedence(str(next_task), stats)
+                if suggested_step:
+                    warning_msg = f"Warning: non-standard step detected. The standard step is: {suggested_step}"
+                    safe_append_error(s, warning_msg)
+                
                 break
             except Exception as e:
                 if attempt == 0:
