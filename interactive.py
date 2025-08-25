@@ -64,6 +64,82 @@ def _strip_circulars(state: GraphState) -> Dict[str, Any]:
     return out
 
 
+def _auto_generate_parameters(task: str, state: GraphState) -> Dict[str, Any]:
+    """Auto-generate appropriate parameters for a given task based on current state."""
+    hypotheses = state.get("hypotheses", [])
+    run_meta = state.get("run_metadata", {}) or {}
+    goal = state.get("research_goal", "")
+    
+    if task == "literature":
+        return {
+            "search_query": goal[:200] if goal else "research literature",
+            "sources": ["pubmed", "arxiv", "scholar"],
+            "max_results": 10
+        }
+    
+    elif task == "generate":
+        # Mirror supervisor logic for generation mode
+        iteration = int(run_meta.get("iteration_count", 0))
+        try:
+            # Simple heuristic for generation mode (similar to supervisor)
+            use_debate = iteration < 5 or len(hypotheses) < 10
+        except Exception:
+            use_debate = False
+        
+        params = {
+            "quantity": 3,
+            "focus_area": goal[:100] if goal else "research focus",
+            "generation_mode": "debate" if use_debate else "standard"
+        }
+        if use_debate:
+            params["debate_max_turns"] = 6
+        return params
+    
+    elif task == "reflect":
+        # Target unreviewed hypotheses
+        unreviewed = [h.get("id") for h in hypotheses if h.get("id") and not h.get("is_reviewed")]
+        return {
+            "priority_hypothesis_ids": unreviewed[:5],  # Limit to first 5
+            "review_depth": "standard"
+        }
+    
+    elif task == "rank":
+        # Target newly reviewed hypotheses
+        newly_reviewed = [h.get("id") for h in hypotheses if h.get("id") and h.get("is_reviewed") and not h.get("is_ranked")]
+        return {
+            "newly_reviewed_ids": newly_reviewed
+        }
+    
+    elif task == "evolve":
+        # Target high-ELO hypotheses for evolution
+        evolution_candidates = [
+            h.get("id") for h in hypotheses 
+            if h.get("id") and h.get("elo_rating", 1200) > 1300 and h.get("is_reviewed")
+        ]
+        return {
+            "target_hypothesis_ids": evolution_candidates[:3],  # Limit to first 3
+            "strategy": "refine"
+        }
+    
+    elif task == "meta_review":
+        total_reviews = sum(len(h.get("reviews", [])) for h in hypotheses)
+        return {
+            "scope": "last_3_iterations" if total_reviews > 20 else "full_history",
+            "focus": "suggest_new_directions"
+        }
+    
+    elif task == "terminate":
+        # Find best hypothesis
+        best_hyp = max(hypotheses, key=lambda h: h.get("elo_rating", 1200), default={}) if hypotheses else {}
+        return {
+            "reason": "user_requested",
+            "final_hypothesis_id": best_hyp.get("id", "")
+        }
+    
+    else:
+        return {}
+
+
 async def _exec_task(task: str, state: GraphState, nodes: Dict[str, Any]) -> None:
     if task == "generate":
         updates = await nodes["generate"](state)
@@ -151,7 +227,8 @@ async def run_interactive(llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI], ini
                 "  set-chronology <text>          Set/replace articles_with_reasoning_text directly.\n"
                 "  next                           Ask Supervisor for next decision (no execution).\n"
                 "  approve                        Execute the last proposed decision (from 'next').\n"
-                "  override <task> <json_params>  Execute a chosen task with parameters.\n"
+                "  override <task> [json_params]  Execute a chosen task. Parameters auto-generated if omitted.\n"
+                "  do <task>                      Quick override: execute task with auto-generated parameters.\n"
                 "  auto <n>                       Auto-run: iterate next+approve n times (stops on terminate).\n"
                 "  checkpoint-dir <path>          Enable checkpointing to a directory (files per iteration).\n"
                 "  save                           Save a checkpoint snapshot now (requires checkpoint-dir).\n"
@@ -274,21 +351,78 @@ async def run_interactive(llm: ChatOpenAI, worker_llm: Optional[ChatOpenAI], ini
                     safe_append_error(state, f"Checkpoint save failed: {e}")
             continue
 
+        if cmd == "do":
+            task_name = rest.strip()
+            if not task_name:
+                print("Usage: do <task>")
+                print("Available tasks: literature, generate, reflect, rank, evolve, meta_review, terminate")
+                continue
+            
+            # Auto-generate parameters and execute immediately
+            params = _auto_generate_parameters(task_name, state)
+            print(f"Executing {task_name} with auto-generated parameters:")
+            print(json.dumps(params, indent=2))
+            
+            state["parameters"] = params
+            await _exec_task(_route_mapping(task_name), state, nodes)
+            proposed_decision = None
+            _print_state_summary(state)
+            if checkpoint_dir:
+                try:
+                    import os
+                    os.makedirs(checkpoint_dir, exist_ok=True)
+                    iter_id = (state.get("run_metadata", {}) or {}).get("iteration_count", 0)
+                    safe_state = _strip_circulars(state)
+                    with open(f"{checkpoint_dir}/iter_{iter_id}.json", "w", encoding="utf-8") as f:
+                        json.dump(safe_state, f, indent=2)
+                except Exception as e:
+                    safe_append_error(state, f"Checkpoint save failed: {e}")
+            continue
+
         if cmd == "override":
             if not rest:
-                print("Usage: override <task> <json_params>")
+                print("Usage: override <task> [json_params]")
+                print("  If json_params are omitted, they will be auto-generated based on current state.")
                 continue
             sub = rest.split(" ", 1)
-            if len(sub) < 2:
-                print("Usage: override <task> <json_params>")
-                continue
             task_name = sub[0].strip()
-            params_raw = sub[1].strip()
+            params_raw = sub[1].strip() if len(sub) > 1 else ""
+            
             try:
-                params = json.loads(params_raw) if params_raw else {}
+                if params_raw:
+                    # User provided explicit parameters
+                    params = json.loads(params_raw)
+                    print(f"Using provided parameters for {task_name}:")
+                    print(json.dumps(params, indent=2))
+                else:
+                    # Auto-generate parameters
+                    params = _auto_generate_parameters(task_name, state)
+                    print(f"Auto-generated parameters for {task_name}:")
+                    print(json.dumps(params, indent=2))
+                    
+                    # Give user a chance to confirm or modify
+                    try:
+                        confirm = input("Proceed with these parameters? (y/n/edit): ").strip().lower()
+                        if confirm == 'n':
+                            print("Override cancelled.")
+                            continue
+                        elif confirm == 'edit':
+                            print("Enter your custom JSON parameters:")
+                            try:
+                                custom_params_raw = input("Parameters: ").strip()
+                                params = json.loads(custom_params_raw)
+                                print("Using custom parameters.")
+                            except json.JSONDecodeError as e:
+                                print(f"Invalid JSON: {e}. Using auto-generated parameters.")
+                            except (EOFError, KeyboardInterrupt):
+                                print("Edit cancelled. Using auto-generated parameters.")
+                    except (EOFError, KeyboardInterrupt):
+                        print("Using auto-generated parameters.")
+                        
             except json.JSONDecodeError as e:
                 print(f"Invalid JSON parameters: {e}")
                 continue
+                
             state["parameters"] = params
             await _exec_task(_route_mapping(task_name), state, nodes)
             proposed_decision = None
