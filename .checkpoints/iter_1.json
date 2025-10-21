@@ -1,0 +1,358 @@
+{
+  "research_goal": "To identify the visual, auditory, and interaction features of immersive 360\u00b0 virtual reality (VR) experiences that most effectively elicit cognitive and neural responses differentiating individuals with mild cognitive impairment (MCI) or early Alzheimer\u2019s disease from cognitively healthy older adults, and to determine which multimodal behavioral and physiological features\u2014including eye gaze, head movement, and prefrontal hemodynamic activity (fNIRS)\u2014best capture those differences.\nThe project will (1) design and iteratively test 360\u00b0 video and spatial audio environments that vary in cognitive demand (e.g., attention, navigation, memory recall, emotional salience, and sensory complexity), and (2) analyze behavioral and neural data collected during these tasks to identify feature patterns that reliably distinguish cognitive status.\nParticipants aged 60\u201380 from outpatient memory clinics and matched healthy controls will complete the VR tasks while gaze, field-of-view dynamics, and fNIRS signals are recorded. Data-driven statistical and computational analyses will be used to identify the stimulus and response features most sensitive and specific to early cognitive decline, with diagnostic accuracy evaluated against established cognitive assessments (e.g., MoCA, CDR).\nPrimary objective: Define the key VR content and sensory features that elicit measurable cognitive signatures and establish a set of multimodal digital biomarkers (behavioral + neural) for early detection of Alzheimer\u2019s-related impairment.",
+  "research_plan_config": {
+    "preferences": "Use immersive 360\u00b0 VR with spatial audio to elicit measurable cognitive signatures; prioritize multimodal behavioral (eye gaze, head movement, field-of-view dynamics) and neural (prefrontal fNIRS) signals; employ iterative stimulus design varying cognitive demands and data-driven analyses to identify sensitive and specific digital biomarkers for early detection of MCI/early Alzheimer\u2019s disease.",
+    "attributes": [
+      "Visual features of 360\u00b0 VR content",
+      "Auditory features including spatial audio",
+      "Interaction features within VR (e.g., navigation, responses)",
+      "Cognitive demand dimensions: attention, navigation, memory recall, emotional salience, sensory complexity",
+      "Behavioral measures: eye gaze metrics, head movement, field-of-view dynamics",
+      "Neural measures: prefrontal hemodynamic activity via fNIRS",
+      "Participant groups: individuals with MCI or early Alzheimer\u2019s disease and cognitively healthy older adults",
+      "Age range: 60\u201380 years",
+      "Stimulus types: 360\u00b0 video and spatial audio environments",
+      "VR tasks varying cognitive load",
+      "Multimodal digital biomarkers (behavioral + neural)",
+      "Data-driven statistical and computational analysis methods",
+      "Ground truth references: MoCA and CDR assessments",
+      "Outcome: feature patterns that distinguish cognitive status",
+      "Iterative design and testing of VR environments",
+      "Recording modalities: eye-tracking, head tracking, fNIRS"
+    ],
+    "constraints": [
+      "Recruit participants aged 60\u201380",
+      "Include outpatient memory clinic patients and matched healthy controls",
+      "Use immersive 360\u00b0 VR with spatial audio",
+      "Design environments varying in cognitive demand (attention, navigation, memory recall, emotional salience, sensory complexity)",
+      "Record eye gaze, field-of-view dynamics, and prefrontal fNIRS during VR tasks",
+      "Apply data-driven statistical and computational analyses",
+      "Evaluate diagnostic accuracy against MoCA and CDR",
+      "Focus on early detection of Alzheimer\u2019s-related impairment",
+      "Iteratively design and test VR stimuli"
+    ],
+    "evaluation_criteria": [
+      "Ability to distinguish MCI/early Alzheimer\u2019s from cognitively healthy older adults",
+      "Sensitivity to early cognitive decline",
+      "Specificity to early cognitive decline",
+      "Diagnostic accuracy relative to MoCA and CDR benchmarks",
+      "Reliability of identified feature patterns across tasks and sessions",
+      "Identification of key VR content and sensory features that elicit measurable cognitive signatures"
+    ]
+  },
+  "hypotheses": [],
+  "meta_review": {},
+  "meta_review_critique": "",
+  "scientific_observations": null,
+  "articles_with_reasoning": [
+    {
+      "title": "Immersive 360\u00b0 VR Features and Multimodal Biomarkers for Early Alzheimer\u2019s Detection",
+      "year": "2025",
+      "citation": "Perplexity web search",
+      "key_findings": [
+        "High-realism 360\u00b0 VR with spatial (ambisonic) audio and interactive tasks elicits measurable cognitive and emotional responses that differentiate MCI/early AD from healthy older adults.",
+        "Spatial navigation tasks\u2014especially path integration and wayfinding with manipulated landmarks and distractors\u2014are among the most sensitive VR paradigms for early Alzheimer\u2019s-related impairment.",
+        "Multimodal behavioral and physiological features (eye gaze, head movement kinematics, and prefrontal fNIRS hemodynamics) show promise as digital biomarkers that classify cognitive status.",
+        "Eye-tracking metrics such as fixation duration on landmarks vs. distractors, scanpath length, gaze entropy, saccade dynamics, and field-of-view transitions distinguish MCI/early AD from controls during navigation and memory tasks.",
+        "Head movement features (yaw/pitch/roll dynamics, rotation rate, exploration coverage, movement variability, and gaze\u2013head coupling) capture compensatory strategies and reduced exploratory behavior in impaired groups.",
+        "Prefrontal fNIRS (dlPFC/PFC) task-evoked changes in HbO/HbR during attention, dual-tasking, and executive-control demands index cognitive load and differ between MCI/early AD and controls.",
+        "Combining gaze, head motion, and fNIRS features with machine learning yields diagnostic accuracy comparable to standard assessments (e.g., MoCA, CDR), with navigation-focused tasks performing best.",
+        "Visual design features that heighten cognitive demand\u2014rich landmark density, controlled visual clutter, dynamic scene changes, and perspective shifts\u2014amplify group differences.",
+        "Spatial audio cues (directional landmarks, environmental soundscapes, and cue congruence/incongruence) enhance presence, support navigation memory, and increase sensitivity to impairment.",
+        "Interactive task elements\u2014active locomotion, object interaction, mission-based goals, and time-pressured or dual-task conditions\u2014boost ecological validity and reveal executive deficits.",
+        "Emotional salience and reminiscence content (e.g., nature scenes, autobiographical cues) improve engagement and mood and can modulate attention and memory performance in dementia populations.",
+        "VR-based cognitive training can improve visual recognition memory and relate to increased activity in task-relevant brain regions, suggesting trainability and neuroplasticity.",
+        "Older adults (60\u201380) from memory clinics can feasibly complete HMD-based 360\u00b0 VR tasks, though comfort, motion sickness, and usability require careful design and onboarding.",
+        "Integration and synchronization of multimodal data streams (eye tracking, head kinematics, fNIRS) are feasible but technically demanding; standardized pipelines improve reliability."
+      ],
+      "relevance_to_goal": "Findings specify which VR content and sensory features (high-realism 360\u00b0 visuals, spatial audio cues, interactive navigation and memory tasks, emotional salience, and controlled sensory complexity) most strongly elicit differentiating cognitive signatures. They identify multimodal digital biomarkers\u2014gaze behavior, head movement dynamics, and prefrontal fNIRS responses\u2014that, when analyzed with machine learning, reliably distinguish MCI/early AD from healthy controls and complement standard assessments. This directly informs stimulus design, sensor selection, and feature engineering for the project\u2019s diagnostic aims.",
+      "methodology_notes": "This summary aggregates insights from recent web-accessible sources discovered via Perplexity, synthesizing reported methods, results, and implications across VR dementia research without conducting a systematic review or meta-analysis.",
+      "limitations": "Web search aggregation may include non\u2013peer-reviewed content (press releases, preprints), incomplete methodological details, and small-sample pilot studies, risking bias and overinterpretation. Evidence quality and generalizability vary, study protocols may differ substantially, and effect sizes or diagnostic metrics may be inconsistently reported. Conclusions should be validated against peer-reviewed literature, preregistered protocols, and larger, demographically diverse cohorts.",
+      "source_record": {
+        "source": "perplexity",
+        "id": "perplexity-web-research",
+        "doi": null,
+        "url": null,
+        "authors": [],
+        "journal": "web_search",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "An exploration of distinguishing subjective cognitive decline and mild cognitive impairment based on resting-state prefrontal functional connectivity assessed by functional near-infrared spectroscopy",
+      "year": "2025",
+      "citation": "https://doi.org/10.3389/fnagi.2024.1468246",
+      "key_findings": [
+        "Resting-state prefrontal functional connectivity measured with fNIRS shows group-level differences that help distinguish subjective cognitive decline (SCD) from mild cognitive impairment (MCI).",
+        "Individuals with MCI exhibit disrupted prefrontal connectivity organization relative to SCD, consistent with reduced network efficiency/strength within prefrontal circuits.",
+        "Connectivity-based features derived from resting-state fNIRS provide discriminatory power for classifying cognitive status along the SCD\u2013MCI continuum.",
+        "Prefrontal connectivity alterations are associated with cognitive performance measures, supporting their potential as noninvasive biomarkers of early cognitive impairment."
+      ],
+      "relevance_to_goal": "Identifies prefrontal fNIRS connectivity features that differentiate early-stage cognitive impairment (SCD vs MCI). These features can be targeted and modulated within immersive 360\u00b0 VR tasks (e.g., attention, working memory, navigation) to elicit informative hemodynamic signatures. The findings support using prefrontal fNIRS metrics\u2014complemented by behavioral measures like gaze and head movement\u2014as multimodal biomarkers for early Alzheimer\u2019s-related impairment.",
+      "methodology_notes": "Cross-sectional comparison of SCD and MCI groups using resting-state fNIRS focused on the prefrontal cortex. Functional connectivity was computed from spontaneous hemodynamic fluctuations (e.g., HbO/HbR) across prefrontal channels, with network-level indices (e.g., connectivity strength/efficiency) used to assess group differences and classification utility.",
+      "limitations": "Resting-state design (no task manipulation) limits inference about cognitive process-specific responses; prefrontal-only fNIRS montage may miss broader network changes; potential confounds from systemic physiological noise and motion; likely modest sample size and single-site recruitment may constrain generalizability and classification robustness.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.3389/fnagi.2024.1468246",
+        "doi": "10.3389/fnagi.2024.1468246",
+        "url": "https://doi.org/10.3389/fnagi.2024.1468246",
+        "authors": [
+          "Zhengping Pu",
+          "Hongna Huang",
+          "Man Li",
+          "Hongyan Li",
+          "Xiaoyan Shen",
+          "Qingfeng Wu",
+          "Qin Ni",
+          "Yong Lin",
+          "Donghong Cui"
+        ],
+        "journal": "Frontiers in Aging Neuroscience",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "Developing a novel brain\u2010based biomarker of mild cognitive impairment using time\u2010domain functional near\u2010infrared spectroscopy",
+      "year": 2024,
+      "citation": "https://doi.org/10.1002/alz.093856",
+      "key_findings": [
+        "Time-domain fNIRS (TD-fNIRS) can capture depth-resolved cortical hemodynamic responses that differentiate individuals with mild cognitive impairment (MCI) from cognitively unimpaired older adults.",
+        "Task-evoked prefrontal hemodynamics showed group differences consistent with altered executive/working-memory processing in MCI.",
+        "Combining TD-fNIRS-derived features with statistical/machine-learning models yields promising discriminatory power for an objective, brain-based MCI biomarker.",
+        "Depth sensitivity in TD-fNIRS helps mitigate superficial (scalp) confounds relative to conventional continuous-wave fNIRS, improving biomarker specificity to cortical activity."
+      ],
+      "relevance_to_goal": "Directly aligns with the goal of identifying neural features (prefrontal hemodynamic activity) that distinguish early cognitive impairment. Demonstrates that TD-fNIRS can provide robust, depth-sensitive cortical signals suitable for integration with immersive 360\u00b0 VR tasks, informing which fNIRS features (e.g., task-evoked HbO/HbR dynamics, depth-resolved measures) may best capture differences between MCI and healthy controls alongside behavioral measures like eye gaze and head movement.",
+      "methodology_notes": "Utilized time-domain fNIRS to measure photon time-of-flight and derive depth-resolved hemoglobin concentration changes, improving separation of cortical from superficial signals. Participants (older adults with MCI and controls) completed cognitively demanding tasks targeting prefrontal function (e.g., executive control/working memory). Hemodynamic features were extracted from task-evoked responses and analyzed with statistical and machine-learning methods to build and evaluate an MCI biomarker.",
+      "limitations": "Likely limited by sample size and single-center cohort, cross-sectional design without longitudinal validation, potential heterogeneity within MCI diagnoses, and focus on prefrontal regions that may not capture broader network dysfunction. TD-fNIRS, while more depth-sensitive, still faces challenges from motion and systemic physiology; external validation and assessment in more naturalistic/immersive settings (e.g., VR) are needed.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1002/alz.093856",
+        "doi": "10.1002/alz.093856",
+        "url": "https://doi.org/10.1002/alz.093856",
+        "authors": [
+          "Julien Dubois",
+          "Ryan M Field",
+          "Sami Jawhar",
+          "Erin M Koch",
+          "Zahra M. Aghajan",
+          "Naomi Miller",
+          "Katherine L Perdue",
+          "Moriah Taylor"
+        ],
+        "journal": "Alzheimer's &amp; Dementia",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "Developing a novel brain\u2010based biomarker of mild cognitive impairment using time\u2010domain functional near\u2010infrared spectroscopy",
+      "year": "2024",
+      "citation": "https://doi.org/10.1002/alz.089909",
+      "key_findings": [
+        "Time-domain fNIRS (TD-fNIRS) signals from prefrontal cortex differentiated individuals with mild cognitive impairment (MCI) from cognitively normal older adults during task-evoked conditions.",
+        "Hemodynamic features beyond simple amplitude (e.g., time-to-peak, rise/decay slopes, and HbO/HbR dynamics) contributed to discrimination, suggesting richer temporal features improve sensitivity.",
+        "Machine-learning models trained on TD-fNIRS-derived features showed promising classification performance for identifying MCI versus controls.",
+        "TD-fNIRS measures showed relationships with standard cognitive assessments, supporting clinical relevance.",
+        "TD-fNIRS\u2019s depth-sensitive measurements provide advantages over continuous-wave fNIRS for brain-based biomarker development."
+      ],
+      "relevance_to_goal": "Highly relevant: it identifies prefrontal hemodynamic features measurable with fNIRS that distinguish MCI from healthy aging. These features (HbO/HbR amplitude, latency, slope, and complexity) can be embedded as neural biomarkers within the proposed immersive 360\u00b0 VR tasks and combined with behavioral metrics (eye/head movement) to improve early detection.",
+      "methodology_notes": "Cross-sectional study comparing MCI and cognitively healthy older adults using time-domain fNIRS focused on prefrontal cortex during cognitive tasks. Extracted task-evoked hemodynamic features (e.g., HbO/HbR amplitudes, temporal dynamics), and applied machine-learning classification with internal validation. TD-fNIRS leveraged photon time-of-flight information to improve depth sensitivity and quantification compared to continuous-wave systems; performance was benchmarked against standard cognitive assessments.",
+      "limitations": "Likely limited sample size and single-site data with cross-sectional design; preliminary/abstract-level reporting with limited methodological detail and absence of external validation; cortical coverage focused mainly on prefrontal regions; potential confounds from systemic physiology and motion; tasks were laboratory-based rather than ecologically rich (e.g., immersive VR), so generalizability to real-world or 360\u00b0 environments remains to be established.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1002/alz.089909",
+        "doi": "10.1002/alz.089909",
+        "url": "https://doi.org/10.1002/alz.089909",
+        "authors": [
+          "Julien Dubois",
+          "Ryan M Field",
+          "Sami Jawhar",
+          "Erin M Koch",
+          "Zahra M. Aghajan",
+          "Naomi Miller",
+          "Katherine L Perdue",
+          "Moriah Taylor"
+        ],
+        "journal": "Alzheimer's &amp; Dementia",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "Developing a novel brain-based biomarker of mild cognitive impairment using time-domain functional near-infrared spectroscopy",
+      "year": "2024",
+      "citation": "https://doi.org/10.1016/j.nsa.2024.104685",
+      "key_findings": [
+        "Introduces and evaluates a brain-based biomarker for mild cognitive impairment (MCI) using time-domain functional near-infrared spectroscopy (TD-fNIRS).",
+        "Findings indicate that TD-fNIRS\u2013derived hemodynamic features can differentiate individuals with MCI from cognitively healthy older adults (specific performance metrics not available in the provided extract).",
+        "Leverages time-resolved optical measurements to capture depth-sensitive cortical hemodynamics relevant to cognitive status.",
+        "Demonstrates feasibility of noninvasive, portable neuroimaging for detecting early cognitive impairment."
+      ],
+      "relevance_to_goal": "Highly relevant: the study uses fNIRS to derive brain-based biomarkers for MCI, directly supporting the project\u2019s aim to identify neural signatures of early cognitive decline during immersive tasks. Its feature engineering and classification approaches for TD-fNIRS can inform the VR study\u2019s selection of prefrontal hemodynamic metrics and analytical pipelines, and can be integrated with multimodal behavioral features (e.g., eye/head dynamics) to enhance diagnostic accuracy.",
+      "methodology_notes": "Based on the title and DOI context, the work employs time-domain fNIRS to record time-of-flight\u2013resolved signals and derive cortical hemodynamic features (e.g., oxy-/deoxyhemoglobin dynamics and temporal moments) in older adults with MCI versus cognitively healthy controls. It likely includes group comparisons and statistical/machine-learning models to assess discriminatory power of TD-fNIRS features. Specific tasks, regions of interest, sample size, and validation procedures are not available in the provided extract.",
+      "limitations": "Details are not available in the provided extract. Typical constraints for TD-fNIRS MCI studies include modest sample sizes, cross-sectional design, potential confounds (age, vascular factors, medication), sensitivity to motion/hair coupling, and the need for external validation and comparison to clinical benchmarks (e.g., MoCA, CDR).",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1016/j.nsa.2024.104685",
+        "doi": "10.1016/j.nsa.2024.104685",
+        "url": "https://doi.org/10.1016/j.nsa.2024.104685",
+        "authors": [
+          "R. Field",
+          "J. Dubois",
+          "S. Jawhar",
+          "E.M. Koch",
+          "Z.M. Aghajan",
+          "N. Miller",
+          "K.L. Perdue",
+          "M. Taylor"
+        ],
+        "journal": "Neuroscience Applied",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "The effect of sensory manipulation on the static balance control and prefrontal cortex activation in older adults with mild cognitive impairment: a functional near-infrared spectroscopy (fNIRS) study",
+      "year": "2024",
+      "citation": "https://doi.org/10.1186/s12877-024-05624-8",
+      "key_findings": [
+        "Sensory complexity during standing balance (foam surface and/or eyes closed) amplified differences between MCI and healthy controls in postural stability, with significant Group\u00d7Surface interactions for COP metrics (e.g., MVELO, MVELO_ml, 95%AREA-CE under eyes open; RMS, RMS_ml, 95%AREA-CE under eyes closed).",
+        "fNIRS revealed group differences in prefrontal activation: under eyes open, L-VLPFC, L-DLPFC, and R-DLPFC showed significant group effects; L-OFC showed a significant Group\u00d7Surface interaction.",
+        "Under eyes closed, group effects were observed in R-VLPFC, L-FPC, L-DLPFC, R-DLPFC, and R-OFC, indicating broader prefrontal involvement when visual cues are removed.",
+        "Findings support that older adults with MCI rely differently on prefrontal executive-control regions for balance under degraded or conflicting sensory conditions.",
+        "Combining balance metrics (COP) with prefrontal hemodynamics can distinguish MCI from cognitively healthy older adults, particularly when sensory inputs are manipulated."
+      ],
+      "relevance_to_goal": "Directly relevant to selecting VR task features that elicit differential cognitive-neural responses in MCI: removing or degrading visual/proprioceptive cues and increasing sensory complexity increase group separability in both behavior (postural sway) and prefrontal hemodynamics. Although not in VR, the results suggest 360\u00b0 VR scenarios that manipulate visual reliability, add sensory conflict, or simulate unstable surfaces may maximize discriminative fNIRS signatures (DLPFC/VLPFC/OFC/FPC) and movement-based biomarkers, informing multimodal feature design (e.g., head sway, gaze-field interactions, PFC Hb responses).",
+      "methodology_notes": "Cross-sectional comparison of 21 older adults with MCI and 19 healthy controls performing four standing conditions: solid vs foam surface, eyes open vs eyes closed. Postural control measured via force platform (COP metrics including mean velocity, RMS, medial-lateral components, and 95% confidence ellipse area). Prefrontal hemodynamics recorded with fNIRS over ROIs (e.g., DLPFC, VLPFC, OFC, FPC). Statistical analyses tested Group, Surface, and Group\u00d7Surface effects separately for eyes-open and eyes-closed conditions, identifying condition-dependent behavioral and neural differences.",
+      "limitations": "Not conducted in immersive VR; tasks limited to static standing balance, which may not generalize to complex cognitive demands (navigation, memory, emotion). Modest sample size and single-site cross-sectional design limit generalizability and causal inference. fNIRS coverage restricted to prefrontal cortex (no parietal/vestibular areas); signals can be affected by motion, scalp-hemodynamics, and hair. Potential confounding from sensory or motor differences not fully detailed (e.g., vision, vestibular function, medications).",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1186/s12877-024-05624-8",
+        "doi": "10.1186/s12877-024-05624-8",
+        "url": "https://doi.org/10.1186/s12877-024-05624-8",
+        "authors": [
+          "Guocai Xu",
+          "Mian Zhou",
+          "Jiangna Wang",
+          "Dewei Mao",
+          "Wei Sun"
+        ],
+        "journal": "BMC Geriatrics",
+        "arxiv_id": null
+      }
+    },
+    {
+      "title": "Quantification of identifying cognitive impairment using olfactory-stimulated functional near-infrared spectroscopy with machine learning: a post hoc analysis of a diagnostic trial and validation of an external additional trial",
+      "year": 2023,
+      "citation": "https://doi.org/10.1186/s13195-023-01268-9",
+      "key_findings": [
+        "Task-evoked fNIRS responses in the orbitofrontal cortex during olfactory stimulation can discriminate MCI and Alzheimer\u2019s disease from cognitively impaired suspects with high accuracy.",
+        "Machine learning on fNIRS oxygenation differences achieved 92.5% internal-validation accuracy and 82.5% external-validation accuracy for classifying MCI/AD.",
+        "For MCI specifically, machine learning outperformed traditional statistical models (internal: 86.0% vs 85.2%; external: 85.4% vs 68.8%).",
+        "Results indicate better generalization and reproducibility of ML-based models than classic statistical approaches across independent cohorts."
+      ],
+      "relevance_to_goal": "Demonstrates that task-evoked prefrontal hemodynamic activity measured by fNIRS can serve as a digital biomarker to differentiate early cognitive impairment, supporting the project\u2019s plan to collect fNIRS during cognitively engaging VR tasks. Although the stimulus here is olfactory rather than VR, the study validates the approach of using targeted, sensory/cognitive challenges to elicit discriminative fNIRS signatures and highlights orbitofrontal/prefrontal responsiveness as informative for ML-based classification.",
+      "methodology_notes": "Two independent, patient-level, single-group diagnostic interventional trials (n=97 original; n=36 external) of older adults (>60) with suspected cognitive decline. Open-label olfactory stimulation while measuring orbitofrontal cortex oxygenation differences via fNIRS; additional assessments included medical interview, amyloid PET, brain MRI, MMSE, and a neuropsychological battery. Post hoc analysis compared classic statistical models to machine learning classifiers for diagnosing MCI and AD with internal and external validation.",
+      "limitations": "External validation accuracy decreased vs internal, indicating potential cohort-specific effects. Small sample sizes, especially in the external trial. Single-group design with participants already suspected of impairment limits comparison to healthy controls. Open-label stimulation and post hoc analysis may introduce bias. fNIRS measurements were limited to orbitofrontal cortex and to olfactory tasks, which may constrain generalizability to other cognitive domains or sensory modalities.",
+      "source_record": {
+        "source": "crossref",
+        "id": "10.1186/s13195-023-01268-9",
+        "doi": "10.1186/s13195-023-01268-9",
+        "url": "https://doi.org/10.1186/s13195-023-01268-9",
+        "authors": [
+          "Jaewon Kim",
+          "Hayeon Lee",
+          "Jinseok Lee",
+          "Sang Youl Rhee",
+          "Jae Il Shin",
+          "Seung Won Lee",
+          "Wonyoung Cho",
+          "Chanyang Min",
+          "Rosie Kwon",
+          "Jae Gwan Kim",
+          "Dong Keon Yon"
+        ],
+        "journal": "Alzheimer's Research &amp; Therapy",
+        "arxiv_id": null
+      }
+    }
+  ],
+  "articles_with_reasoning_text": "- [2023] Quantification of identifying cognitive impairment using olfactory-stimulated functional near-infrared spectroscopy with machine learning: a post hoc analysis of a diagnostic trial and validation of an external additional trial \u2014 Demonstrates that task-evoked prefrontal hemodynamic activity measured by fNIRS can serve as a digital biomarker to differentiate early cognitive impairment, supporting the project\u2019s plan to collect fNIRS during cogni...\n- [2024] Developing a novel brain\u2010based biomarker of mild cognitive impairment using time\u2010domain functional near\u2010infrared spectroscopy \u2014 Directly aligns with the goal of identifying neural features (prefrontal hemodynamic activity) that distinguish early cognitive impairment. Demonstrates that TD-fNIRS can provide robust, depth-sensitive cortical signa...\n- [2024] Developing a novel brain\u2010based biomarker of mild cognitive impairment using time\u2010domain functional near\u2010infrared spectroscopy \u2014 Highly relevant: it identifies prefrontal hemodynamic features measurable with fNIRS that distinguish MCI from healthy aging. These features (HbO/HbR amplitude, latency, slope, and complexity) can be embedded as neura...\n- [2024] Developing a novel brain-based biomarker of mild cognitive impairment using time-domain functional near-infrared spectroscopy \u2014 Highly relevant: the study uses fNIRS to derive brain-based biomarkers for MCI, directly supporting the project\u2019s aim to identify neural signatures of early cognitive decline during immersive tasks. Its feature engine...\n- [2024] The effect of sensory manipulation on the static balance control and prefrontal cortex activation in older adults with mild cognitive impairment: a functional near-infrared spectroscopy (fNIRS) study \u2014 Directly relevant to selecting VR task features that elicit differential cognitive-neural responses in MCI: removing or degrading visual/proprioceptive cues and increasing sensory complexity increase group separabilit...\n- [2025] Immersive 360\u00b0 VR Features and Multimodal Biomarkers for Early Alzheimer\u2019s Detection \u2014 Findings specify which VR content and sensory features (high-realism 360\u00b0 visuals, spatial audio cues, interactive navigation and memory tasks, emotional salience, and controlled sensory complexity) most strongly elic...\n- [2025] An exploration of distinguishing subjective cognitive decline and mild cognitive impairment based on resting-state prefrontal functional connectivity assessed by functional near-infrared spectroscopy \u2014 Identifies prefrontal fNIRS connectivity features that differentiate early-stage cognitive impairment (SCD vs MCI). These features can be targeted and modulated within immersive 360\u00b0 VR tasks (e.g., attention, working...",
+  "literature_content": null,
+  "decision": {
+    "next_task": "literature",
+    "parameters": {
+      "search_query": "(\"virtual reality\" OR immersive OR \"360 video\" OR \"360\u00b0\" OR \"head-mounted display\" OR HMD OR \"spatial audio\" OR ambisonic*) AND (Alzheimer* OR \"mild cognitive impairment\" OR MCI OR dementia OR \"cognitive decline\" OR aging) AND (\"eye tracking\" OR eye track* OR gaze OR \"head movement\" OR kinematic* OR \"field of view\" OR \"viewing behavior\" OR oculomotor) AND (fNIRS OR \"functional near-infrared\" OR \"near infrared spectroscopy\" OR hemodynamic OR prefrontal OR PFC OR dlPFC) AND (navigation OR attention OR memory OR \"wayfinding\" OR \"path integration\" OR \"emotional salience\" OR \"sensory complexity\") AND (\"digital biomarker*\" OR biomarker* OR \"diagnostic accuracy\" OR classification OR \"machine learning\" OR \"feature importance\")",
+      "sources": [
+        "pubmed",
+        "crossref",
+        "arxiv",
+        "scholar",
+        "perplexity"
+      ],
+      "max_results": 30
+    },
+    "rationale": "Iteration_count is 0 with no hypotheses, reviews, or evolution candidates. Per the decision rules, the bootstrap phase (iteration_count < 2) mandates a broad literature retrieval, and there is no literature cooldown active (last_literature_iteration is null). This action seeds the hypothesis space for an exploratory phase where discovery momentum and hypothesis diversity are both 0. The query targets the core elements of the research goal: immersive 360\u00b0 VR with spatial audio, multimodal behavioral features (eye gaze, head movement, field-of-view dynamics), and prefrontal fNIRS during tasks varying cognitive demands (attention, navigation, memory, emotional salience, sensory complexity) aimed at early MCI/AD detection and digital biomarker development. Including biomarker and classification terms helps surface studies reporting sensitivity/specificity or ML feature importance relevant to diagnostic accuracy.",
+    "iteration": 1,
+    "statistics": {
+      "iteration_count": 0,
+      "total_hypotheses": 0,
+      "unreviewed_hypotheses": 0,
+      "newly_reviewed_hypotheses": 0,
+      "top_elo_score": 1200,
+      "last_task": null,
+      "iterations_since_improvement": 0,
+      "total_reviews": 0,
+      "new_reviews_since_last": 0,
+      "evolution_candidates": 0,
+      "has_meta_review": false,
+      "last_literature_iteration": null
+    },
+    "enhanced_statistics": {
+      "research_phase": "exploratory",
+      "discovery_momentum": 0.0,
+      "hypothesis_diversity": 0.0,
+      "workflow_efficiency": 1.0,
+      "stagnation_risk": 0.25,
+      "breakthrough_probability": 0.125,
+      "bottleneck_indicators": []
+    },
+    "research_goal": "To identify the visual, auditory, and interaction features of immersive 360\u00b0 virtual reality (VR) experiences that most effectively elicit cognitive and neural responses differentiating individuals with mild cognitive impairment (MCI) or early Alzheimer\u2019s disease from cognitively healthy older adults, and to determine which multimodal behavioral and physiological features\u2014including eye gaze, head movement, and prefrontal hemodynamic activity (fNIRS)\u2014best capture those differences.\nThe project will (1) design and iteratively test 360\u00b0 video and spatial audio environments that vary in cognitive demand (e.g., attention, navigation, memory recall, emotional salience, and sensory complexity), and (2) analyze behavioral and neural data collected during these tasks to identify feature patterns that reliably distinguish cognitive status.\nParticipants aged 60\u201380 from outpatient memory clinics and matched healthy controls will complete the VR tasks while gaze, field-of-view dynamics, and fNIRS signals are recorded. Data-driven statistical and computational analyses will be used to identify the stimulus and response features most sensitive and specific to early cognitive decline, with diagnostic accuracy evaluated against established cognitive assessments (e.g., MoCA, CDR).\nPrimary objective: Define the key VR content and sensory features that elicit measurable cognitive signatures and establish a set of multimodal digital biomarkers (behavioral + neural) for early detection of Alzheimer\u2019s-related impairment.",
+    "strategic_context": "This literature pass bootstraps the knowledge base to generate and prioritize high-quality, mechanism-grounded hypotheses aligned with the project\u2019s multimodal VR-fNIRS biomarker objective. It establishes the design space for stimuli and measurement features, identifies proven task paradigms (e.g., navigation/path integration, attention switching), and surfaces analytic approaches for multimodal fusion and diagnostic evaluation\u2014enabling subsequent hypothesis generation and evolution steps to proceed efficiently and with strong external grounding.",
+    "warning": null
+  },
+  "next_task": "literature",
+  "parameters": {
+    "search_query": "(\"virtual reality\" OR immersive OR \"360 video\" OR \"360\u00b0\" OR \"head-mounted display\" OR HMD OR \"spatial audio\" OR ambisonic*) AND (Alzheimer* OR \"mild cognitive impairment\" OR MCI OR dementia OR \"cognitive decline\" OR aging) AND (\"eye tracking\" OR eye track* OR gaze OR \"head movement\" OR kinematic* OR \"field of view\" OR \"viewing behavior\" OR oculomotor) AND (fNIRS OR \"functional near-infrared\" OR \"near infrared spectroscopy\" OR hemodynamic OR prefrontal OR PFC OR dlPFC) AND (navigation OR attention OR memory OR \"wayfinding\" OR \"path integration\" OR \"emotional salience\" OR \"sensory complexity\") AND (\"digital biomarker*\" OR biomarker* OR \"diagnostic accuracy\" OR classification OR \"machine learning\" OR \"feature importance\")",
+    "sources": [
+      "pubmed",
+      "crossref",
+      "arxiv",
+      "scholar",
+      "perplexity"
+    ],
+    "max_results": 30
+  },
+  "run_metadata": {
+    "iteration_count": 1,
+    "last_task": "literature",
+    "total_hypotheses": 0,
+    "top_elo_score": 1200,
+    "iterations_since_improvement": 0,
+    "unreviewed_hypotheses": 0,
+    "newly_reviewed_hypotheses": 0,
+    "last_reflection_count": 0,
+    "previous_review_count": 0,
+    "decision_history": [
+      {
+        "iteration": 0,
+        "action": "literature",
+        "pre_top_elo": 1200,
+        "post_top_elo": null
+      }
+    ],
+    "last_literature_iteration": 0,
+    "evolution_candidates": 0,
+    "meta_review_available": false
+  },
+  "errors": [],
+  "tournament_state": {},
+  "proximity_graph": {}
+}
